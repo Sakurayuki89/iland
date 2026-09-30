@@ -8,13 +8,18 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from _common import utf8_output  # noqa: E402
+
+utf8_output()
+
 ROOT = Path(__file__).resolve().parents[2]
 LINT = ROOT / "tools" / "content_lint.py"
 BAD = Path(__file__).resolve().parent / "fixtures" / "bad"
 
 
 def run(*args):
-    r = subprocess.run([sys.executable, str(LINT), *args], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, str(LINT), *args], capture_output=True, text=True, encoding="utf-8", errors="replace")
     return r.returncode, r.stdout + r.stderr
 
 

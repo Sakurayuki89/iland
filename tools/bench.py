@@ -27,8 +27,9 @@ import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
+from _common import CHROME_HELP, find_chrome, kill_tree, run_text, spawn, utf8_output
+
 ROOT = Path(__file__).resolve().parent.parent
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 RESULTS: list[dict] = []
 
 
@@ -62,20 +63,22 @@ def main() -> int:
     ap.add_argument("--no-build", action="store_true")
     ap.add_argument("--json", action="store_true", help="print raw JSON instead of a table")
     a = ap.parse_args()
+    utf8_output()
 
-    if not Path(CHROME).exists():
-        print("Google Chrome not found; install it or edit CHROME in tools/bench.py", file=sys.stderr)
+    chrome_exe = find_chrome()
+    if not chrome_exe:
+        print(CHROME_HELP, file=sys.stderr)
         return 2
     if not a.no_build:
         print("building client ...", flush=True)
-        if subprocess.run(["pnpm", "--filter", "@island/client", "build"], cwd=ROOT, capture_output=True).returncode:
+        if run_text(["pnpm", "--filter", "@island/client", "build"], timeout=600, cwd=ROOT).returncode:
             print("build failed (run `pnpm build` to see why)", file=sys.stderr)
             return 1
 
     results: list[dict] = []
     srv = HTTPServer(("127.0.0.1", 8766), Receiver)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
-    preview = subprocess.Popen(
+    preview = spawn(
         ["pnpm", "--filter", "@island/client", "exec", "vite", "preview", "--port", "4173", "--strictPort", "--host", "127.0.0.1"],
         cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
     )
@@ -84,7 +87,7 @@ def main() -> int:
         for n in [int(x) for x in a.stress.split(",")]:
             RESULTS.clear()
             url = f"http://127.0.0.1:4173/?stress={n}&bench={a.seconds}&report=http://127.0.0.1:8766/r&grid=0"
-            with tempfile.TemporaryDirectory() as prof:
+            with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as prof:  # Windows may still hold files briefly
                 flags = [
                     "--headless=new", f"--user-data-dir={prof}", "--window-size=960,540", "--hide-scrollbars",
                     "--disable-frame-rate-limit", "--disable-gpu-vsync",
@@ -93,21 +96,17 @@ def main() -> int:
                 ]
                 if a.software:
                     flags += ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
-                chrome = subprocess.Popen([CHROME, *flags, url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                chrome = spawn([chrome_exe, *flags, url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 deadline = time.time() + a.seconds + 25
                 while not RESULTS and time.time() < deadline:
                     time.sleep(0.25)
-                chrome.terminate()
-                try:
-                    chrome.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    chrome.kill()
+                kill_tree(chrome)
             if not RESULTS:
                 print(f"N={n}: no result (timeout)", file=sys.stderr)
                 continue
             results.append(RESULTS[-1])
     finally:
-        preview.terminate()
+        kill_tree(preview)
         srv.shutdown()
 
     if a.json:

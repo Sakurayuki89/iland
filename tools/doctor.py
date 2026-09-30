@@ -3,7 +3,7 @@
 # requires-python = ">=3.11"
 # dependencies = []
 # ///
-"""Environment check for Island development.
+"""Environment check for Island development (macOS, Windows, Linux).
 
 Read-only: it never installs or changes anything, it only reports what is
 missing and the command that fixes it. Secret values are never printed
@@ -15,19 +15,24 @@ from __future__ import annotations
 
 import os
 import re
-import shutil
-import subprocess
 import sys
 from pathlib import Path
 
+from _common import IS_MAC, IS_WINDOWS, find_chrome, run_text, utf8_output, which
+
 ROOT = Path(__file__).resolve().parent.parent
-OK, WARN, MISS = "ok", "warn", "missing"
+OK, WARN, MISS, SKIP = "ok", "warn", "missing", "n/a"
+
+
+def pick(mac: str, win: str, other: str = "") -> str:
+    """Install hint for the current OS."""
+    return win if IS_WINDOWS else mac if IS_MAC else (other or mac)
 
 
 def run(cmd: list[str]) -> tuple[bool, str]:
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
-    except (OSError, subprocess.TimeoutExpired):
+        r = run_text(cmd)
+    except (OSError, Exception):  # missing program, timeout, ...
         return False, ""
     return r.returncode == 0, (r.stdout or r.stderr).strip()
 
@@ -37,8 +42,8 @@ def ver(text: str) -> tuple[int, ...]:
     return tuple(int(x) for x in m.groups(default="0")) if m else (0, 0, 0)
 
 
-def check_cmd(cmd: list[str], label: str, fix: str, minimum: tuple[int, ...] | None = None):
-    if not shutil.which(cmd[0]):
+def check_cmd(cmd: list[str], fix: str, minimum: tuple[int, ...] | None = None):
+    if not which(cmd[0]):
         return MISS, "not found", fix
     ok, out = run(cmd)
     if not ok:
@@ -49,9 +54,29 @@ def check_cmd(cmd: list[str], label: str, fix: str, minimum: tuple[int, ...] | N
     return OK, first, ""
 
 
-def check_app(name: str, fix: str):
-    p = Path("/Applications") / f"{name}.app"
-    return (OK, str(p), "") if p.exists() else (MISS, "not installed", fix)
+def tiled_paths() -> list[Path]:
+    if IS_MAC:
+        return [Path("/Applications/Tiled.app")]
+    if IS_WINDOWS:
+        roots = [os.environ.get(k) for k in ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA")]
+        return [Path(r) / "Tiled" / "tiled.exe" for r in roots if r] + [Path(r) / "Programs" / "Tiled" / "tiled.exe" for r in roots if r]
+    return []
+
+
+def check_tiled():
+    fix = pick("brew install --cask tiled", "download the installer from https://www.mapeditor.org/ (or: winget search tiled)", "sudo apt install tiled")
+    for p in tiled_paths():
+        if p.exists():
+            return OK, str(p), ""
+    exe = which("tiled")
+    return (OK, exe, "") if exe else (MISS, "not installed", fix)
+
+
+def check_chrome():
+    exe = find_chrome()
+    if exe:
+        return OK, exe, ""
+    return MISS, "Chrome/Edge not found (set CHROME_PATH if it is installed elsewhere)", pick("brew install --cask google-chrome", "winget install Google.Chrome")
 
 
 def check_repo():
@@ -65,6 +90,8 @@ def check_deps():
 
 
 def check_xcode():
+    if not IS_MAC:
+        return SKIP, "iOS builds need a Mac", ""
     ok, out = run(["xcodebuild", "-version"])
     if ok:
         return OK, out.splitlines()[0], ""
@@ -73,28 +100,29 @@ def check_xcode():
 
 
 def check_java():
-    if not shutil.which("java"):
-        return MISS, "not found", "brew install --cask temurin@17"
+    fix = pick("brew install --cask temurin@17", "winget install EclipseAdoptium.Temurin.17.JDK", "sudo apt install openjdk-17-jdk")
+    if not which("java"):
+        return MISS, "not found", fix
     ok, out = run(["java", "-version"])
     if not ok:
-        return MISS, "no Java runtime", "brew install --cask temurin@17"
+        return MISS, "no Java runtime", fix
     return OK, out.splitlines()[0], ""
 
 
 def check_android_sdk():
-    cands = [os.environ.get("ANDROID_HOME"), os.environ.get("ANDROID_SDK_ROOT"),
-             str(Path.home() / "Library/Android/sdk")]
-    for c in cands:
+    default = (Path(os.environ.get("LOCALAPPDATA", "")) / "Android" / "Sdk") if IS_WINDOWS else Path.home() / ("Library/Android/sdk" if IS_MAC else "Android/Sdk")
+    for c in [os.environ.get("ANDROID_HOME"), os.environ.get("ANDROID_SDK_ROOT"), str(default)]:
         if c and Path(c).exists():
             return OK, c, ""
-    return MISS, "Android SDK not found", "brew install --cask android-studio  (then open it once to install the SDK)"
+    fix = pick("brew install --cask android-studio", "winget install Google.AndroidStudio")
+    return MISS, "Android SDK not found", f"{fix}  (then open it once to install the SDK)"
 
 
 def read_env_names() -> set[str]:
     names = {k for k, v in os.environ.items() if v}
     envf = ROOT / ".env"
     if envf.exists():
-        for line in envf.read_text(encoding="utf-8").splitlines():
+        for line in envf.read_text(encoding="utf-8-sig").splitlines():
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 k, v = line.split("=", 1)
@@ -111,17 +139,17 @@ def groups():
     env_names = read_env_names()
     return [
         ("REQUIRED  core development", True, [
-            ("node >= 20.19", lambda: check_cmd(["node", "--version"], "node", "brew install node@22", (20, 19))),
-            ("pnpm", lambda: check_cmd(["pnpm", "--version"], "pnpm", "corepack enable  (or: brew install pnpm)")),
-            ("uv (runs tools/*.py)", lambda: check_cmd(["uv", "--version"], "uv", "brew install uv")),
-            ("git", lambda: check_cmd(["git", "--version"], "git", "xcode-select --install")),
-            ("ffmpeg (audio/video)", lambda: check_cmd(["ffmpeg", "-version"], "ffmpeg", "brew install ffmpeg")),
+            ("node >= 20.19", lambda: check_cmd(["node", "--version"], pick("brew install node@22", "winget install OpenJS.NodeJS.LTS"), (20, 19))),
+            ("pnpm", lambda: check_cmd(["pnpm", "--version"], "corepack enable  (or: npm install -g pnpm)")),
+            ("uv (runs tools/*.py)", lambda: check_cmd(["uv", "--version"], pick("brew install uv", "winget install astral-sh.uv"))),
+            ("git", lambda: check_cmd(["git", "--version"], pick("xcode-select --install", "winget install Git.Git"))),
+            ("ffmpeg (audio/video)", lambda: check_cmd(["ffmpeg", "-version"], pick("brew install ffmpeg", "winget install Gyan.FFmpeg"))),
             ("git repository", check_repo),
             ("client dependencies", check_deps),
         ]),
         ("RECOMMENDED  authoring", False, [
-            ("Tiled (map editor)", lambda: check_app("Tiled", "brew install --cask tiled")),
-            ("Google Chrome (headless checks)", lambda: check_app("Google Chrome", "brew install --cask google-chrome")),
+            ("Tiled (map editor)", check_tiled),
+            ("Chrome/Edge (headless checks)", check_chrome),
         ]),
         ("MOBILE  only for iOS/Android builds", False, [
             ("Xcode", check_xcode),
@@ -137,20 +165,23 @@ def groups():
 
 
 def main() -> int:
-    mark = {OK: "ok  ", WARN: "warn", MISS: "MISS"}
+    utf8_output()
+    mark = {OK: "ok  ", WARN: "warn", MISS: "MISS", SKIP: "n/a "}
     required_failed = 0
-    totals = {OK: 0, WARN: 0, MISS: 0}
+    totals = {OK: 0, WARN: 0, MISS: 0, SKIP: 0}
+    platform = "Windows" if IS_WINDOWS else "macOS" if IS_MAC else "Linux"
+    print(f"platform: {platform}")
     for title, required, checks in groups():
         print(f"\n{title}")
         for label, fn in checks:
             status, detail, fix = fn()
             totals[status] += 1
             print(f"  [{mark[status]}] {label:<34} {detail}")
-            if status != OK and fix:
+            if status in (WARN, MISS) and fix:
                 print(f"         fix: {fix}")
-            if required and status != OK:
+            if required and status in (WARN, MISS):
                 required_failed += 1
-    print(f"\n{totals[OK]} ok, {totals[WARN]} warning(s), {totals[MISS]} missing"
+    print(f"\n{totals[OK]} ok, {totals[WARN]} warning(s), {totals[MISS]} missing, {totals[SKIP]} n/a"
           + (f"  -> {required_failed} REQUIRED item(s) need attention" if required_failed else ""))
     return 1 if required_failed else 0
 

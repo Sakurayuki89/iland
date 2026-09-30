@@ -6,19 +6,21 @@ Island 제작용 자체 툴. 모두 **Python 단일 파일 + `uv run`** (의존�
 | 툴 | 역할 | 실행 |
 |----|------|------|
 | `sprite_slicer.py` | AI 캐릭터 시트(흰 배경) → 배경 제거·12프레임 분리·정렬 → Phaser 아틀라스 | `uv run tools/sprite_slicer.py content/<시트>.png --clear-enclosed` |
-| `build_sprites.sh` | **모든 캐릭터 아틀라스를 한 번에 다시 만든다.** 시트별 보정 옵션이 여기 적혀 있으니 슬라이서를 직접 부르지 말고 이걸 쓴다 | `./tools/build_sprites.sh` |
+| `build_sprites.py` | **모든 캐릭터 아틀라스를 한 번에 다시 만든다**(맥·윈도우 공통). 시트별 보정 옵션이 여기 적혀 있으니 슬라이서를 직접 부르지 말고 이걸 쓴다. `build_sprites.sh`는 이것을 부르는 얇은 래퍼 | `uv run tools/build_sprites.py [캐릭터키]` (= `pnpm build:sprites`) |
 | `palette_swap.py` | 털 무늬/꼬리 끝 + 스카프 색만 바꿔 플레이어 7인 외형 생성 | `uv run tools/palette_swap.py` |
 | `atlas_preview.html` | 아틀라스 애니메이션 재생·검수 (피벗선, 어니언 스킨, 바닥 스크롤) | 아래 참고 |
 | `content_lint.py` | 단어/대사/퀘스트 JSON·CSV 검증 (12단어 제한, 허용 어휘, 한글 번역, 중복 id, 에셋 경로) | `uv run tools/content_lint.py [--strict] [-v]` |
 | `doctor.py` | 개발 환경 점검(읽기 전용): 필수/권장/모바일/API 키(값은 출력 안 함) | `uv run tools/doctor.py` (= `pnpm doctor`) |
 | `bench.py` | 군중 성능 측정: 스프라이트 N개가 걸어 다닐 때 프레임 간격 (`--software`로 GPU 없는 상황 가정) | `uv run tools/bench.py --stress 7,30,100` (= `pnpm bench`) |
 | `shot.py` | 페이지를 실제 시간으로 돌린 뒤 캡처. `--until "JS조건"`으로 특정 순간(예: 랩의 `window.__labTime >= 0.27`)을 기다렸다 찍을 수 있다 | `uv run tools/shot.py URL out.png --wait 1.2 --frames 3` |
+| `_common.py` | 도구 공용(Chrome/Edge 찾기, 프로세스 종료, UTF-8 출력). 직접 실행하지 않음 | — |
+| `tests/test_common.py` | 브라우저 탐색이 맥/윈도우/리눅스에서 맞게 동작하는지(경로를 흉내 내어) 확인 | `uv run tools/tests/test_common.py` |
 | `tests/test_content_lint.py` | 린트가 정상 데이터는 통과시키고 깨진 픽스처는 잡는지 확인 | `uv run tools/tests/test_content_lint.py` |
 
 ## 파이프라인 (캐릭터)
 ```
 content/…시트.png (+ 추가 포즈 시트)
-  └─ build_sprites.sh → sprite_slicer  →  assets/sprites/<캐릭터>.{png,json,anims.json} + <캐릭터>_contact.png
+  └─ build_sprites.py → sprite_slicer  →  assets/sprites/<캐릭터>.{png,json,anims.json} + <캐릭터>_contact.png
         └─ palette_swap  →  cat_p1..p7.{png,json,anims.json} + cat_palettes_contact.png
               └─ atlas_preview 로 눈 검수
 ```
@@ -41,7 +43,7 @@ content/…시트.png (+ 추가 포즈 시트)
 ## atlas_preview.html
 파일만 더블클릭해서 열고 **PNG + .json + .anims.json 3개를 드롭**하면 된다. 또는 저장소 루트에서
 ```
-python3 -m http.server 8765
+python -m http.server 8765      # macOS는 python3, Windows는 python 또는 py
 # http://127.0.0.1:8765/tools/atlas_preview.html   (cat_base 자동 로드)
 ```
 URL 파라미터: `?base=../assets/sprites/cat_p3&dir=left&act=walk&fps=8&sc=2&gs=120&onion=1&bg=grass&guides=0`

@@ -1,0 +1,10 @@
+# Keep line endings stable across macOS and Windows checkouts.
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.mp3 binary
+*.ogg binary
+*.wav binary

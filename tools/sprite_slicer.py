@@ -22,6 +22,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage, signal
+from _common import utf8_output
 
 ROW_NAMES = ["down", "up", "left"]
 COL_NAMES = ["idle", "walk_a", "walk_b", "net"]
@@ -346,7 +347,7 @@ def build(args) -> None:
             "source": src.name, "extra": [e[0].name for e in extras], "frame_size": {"w": fw, "h": fh},
             "char_height": args.char_height,
             "origin": {"x": 0.5, "y": round(piv_y_final / fh, 4)}}
-    (out / f"{key}.json").write_text(json.dumps({"frames": hashed, "meta": meta}, indent=2))
+    (out / f"{key}.json").write_text(json.dumps({"frames": hashed, "meta": meta}, indent=2), encoding="utf-8")
 
     # Phaser anims.fromJSON (+ flipX, which Phaser ignores; the client applies it)
     def anim(k, frame_names, fps, repeat, flip=False):
@@ -360,7 +361,7 @@ def build(args) -> None:
         anims.append(anim(f"walk_{direction}", [f"{src_dir}_idle", f"{src_dir}_walk_a",
                                                 f"{src_dir}_idle", f"{src_dir}_walk_b"], args.walk_fps, -1, flip))
         anims.append(anim(f"net_{direction}", [f"{src_dir}_net"], 1, 0, flip))
-    (out / f"{key}.anims.json").write_text(json.dumps({"anims": anims, "globalTimeScale": 1}, indent=2))
+    (out / f"{key}.anims.json").write_text(json.dumps({"anims": anims, "globalTimeScale": 1}, indent=2), encoding="utf-8")
 
     make_contact(final, names, fw, fh, piv_y_final, args.cols, out / f"{key}_contact.png")
 
@@ -413,6 +414,7 @@ def make_contact(frames, names, fw, fh, piv_y, cols, path):
 
 
 def main():
+    utf8_output()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("sheet", help="input sheet PNG (white background)")
     p.add_argument("-o", "--out-dir", default="assets/sprites")

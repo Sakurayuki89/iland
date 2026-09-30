@@ -2,7 +2,9 @@
   "name": "island",
   "private": true,
   "packageManager": "pnpm@10.34.4",
-  "engines": { "node": ">=20.19" },
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "dev": "pnpm --filter @island/client dev",
     "build": "pnpm --filter @island/client build",
@@ -11,6 +13,7 @@
     "doctor": "uv run tools/doctor.py",
     "bench": "uv run tools/bench.py",
     "lint:content": "uv run tools/content_lint.py",
-    "test:tools": "uv run tools/tests/test_content_lint.py"
+    "test:tools": "uv run tools/tests/test_content_lint.py && uv run tools/tests/test_common.py",
+    "build:sprites": "uv run tools/build_sprites.py"
   }
 }

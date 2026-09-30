@@ -25,6 +25,7 @@ import sys
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
+from _common import utf8_output
 
 MAX_WORDS = 12
 WORD_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?")
@@ -200,6 +201,7 @@ def check_assets(assets, root: Path, strict: bool, verbose: bool, rep: Report):
 
 def main():
     here = Path(__file__).resolve().parent.parent
+    utf8_output()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--data-dir", default=str(here / "data"))
     p.add_argument("--schema-dir", default=str(here / "data" / "schema"))

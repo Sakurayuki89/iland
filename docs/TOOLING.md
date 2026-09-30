@@ -47,8 +47,9 @@ pnpm typecheck && pnpm test   # 타입체크 + 단위 테스트
 pnpm build                    # 프로덕션 빌드
 pnpm doctor                   # 환경 점검 (읽기 전용)
 pnpm lint:content             # 단어/대사/퀘스트 검증
-pnpm test:tools               # 콘텐츠 린트 자체 테스트
-open -a Tiled                 # 맵 에디터
+pnpm test:tools               # 콘텐츠 린트 + 플랫폼 탐색 자체 테스트
+pnpm build:sprites            # 캐릭터 아틀라스 전체 재생성
+open -a Tiled                 # 맵 에디터 (macOS). Windows는 시작 메뉴에서 Tiled 실행
 ```
 
 샌드박스 씬 쿼리: `?char=cat_base|siamese_base` · `?dir=left&act=walk|idle|net`(애니메이션 고정 재생) · `?grid=0`. 클릭/탭하면 그 지점으로 걷는다(게임 규칙 아님, 파이프라인 검증용).
@@ -89,7 +90,7 @@ open -a Tiled                 # 맵 에디터
 - 게임과 **같은 코드**로 재생한다: `apps/client/src/lib/action.ts`(샘플링·검증, 순수 로직) · `actionPlayer.ts` · `fx.ts`. `pnpm test`가 모든 액션 파일의 형식과 "두 캐릭터 모두 가진 포즈만 쓰는지"를 검사한다.
 
 **한계 (정직하게)**
-- 표정은 **그린 포즈가 있는 것만**(넘어짐·기쁨·놀람) 바뀐다. 새 표정이 필요하면 포즈 시트를 생성해 `tools/build_sprites.sh`의 `--extra`에 추가하면 랩의 `포즈` 트랙에서 바로 쓸 수 있다. 뒷모습은 얼굴이 안 보이므로 팔·꼬리 자세로만 구분된다.
+- 표정은 **그린 포즈가 있는 것만**(넘어짐·기쁨·놀람) 바뀐다. 새 표정이 필요하면 포즈 시트를 생성해 `tools/build_sprites.py`의 `--extra`에 추가하면 랩의 `포즈` 트랙에서 바로 쓸 수 있다. 뒷모습은 얼굴이 안 보이므로 팔·꼬리 자세로만 구분된다.
 - 타임라인에 "액션 길이" 표시선은 없다(길이는 오른쪽 패널). 길이를 넘는 키는 저장 시 검증에서 걸린다.
 - 저장 API는 개발 서버에서만, 같은 출처의 JSON 요청만 받고 파일 이름은 검증된 id로만 만든다.
 
@@ -151,3 +152,32 @@ open -a Tiled                 # 맵 에디터
 | 사물 4방향 시트 생성 | [fal/flux-2-klein-4b-spritesheet-lora](https://huggingface.co/fal/flux-2-klein-4b-spritesheet-lora) | Apache-2.0, 2×2 다시점 | 가구 그림 때 시험 후보 (미검증, 실행 환경 필요) |
 | 픽셀아트 시트 생성 모델들 | HF 다수 | Apache-2.0 | 수채화 그림체와 안 맞아 제외 |
 | 무료 로컬 TTS | [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) | Apache-2.0, ♥7k | **영어 전용 무료 후보** — 음성 목록에 한국어 없음. 한국어는 기존 후보 유지 |
+
+## 9. Windows에서 개발하기 (RTX 노트북)
+
+개발 도구는 맥·윈도우 공통으로 동작하도록 고쳤다(2026-10-01). **맥에서만 실행해 검증했고 윈도우 실기는 아직 확인하지 못했다.** 경로 탐색 로직은 윈도우 환경을 흉내 낸 테스트(`tools/tests/test_common.py`)로 확인했다.
+
+**설치** (PowerShell, 관리자 권한 불필요한 것이 대부분):
+```powershell
+winget install OpenJS.NodeJS.LTS     # Node 20.19 이상
+winget install astral-sh.uv          # 파이썬 도구 실행기 (파이썬도 알아서 받는다)
+winget install Git.Git
+winget install Gyan.FFmpeg
+winget install Google.Chrome         # 캡처·벤치용 (Edge만 있어도 자동으로 사용)
+corepack enable                      # pnpm (또는 npm install -g pnpm)
+```
+Tiled는 https://www.mapeditor.org/ 에서 설치. 설치 후 새 터미널에서 `pnpm install`, `pnpm doctor`.
+
+**바뀐 것**
+- Chrome/Edge 위치를 Program Files·LocalAppData에서 자동으로 찾는다. 다른 곳에 있으면 환경변수 `CHROME_PATH`로 지정.
+- `pnpm`이 윈도우에서는 `pnpm.cmd`라 그냥 실행하면 못 찾는 문제를 경로를 풀어서 해결했다.
+- 벤치/캡처가 끝나면 `taskkill /T`로 자식 프로세스까지 종료한다.
+- 한국어 윈도우의 기본 인코딩(cp949) 때문에 생기던 문제 두 가지를 막았다: 파일을 읽고 쓸 때 UTF-8을 명시했고, 콘솔 출력이 한글에서 죽지 않게 했다(`PYTHONIOENCODING=ascii`로 재현해 확인).
+- `build_sprites.sh`(셸 필요)를 `build_sprites.py`로 옮겼다. `.sh`는 이것을 부르는 래퍼.
+- `.gitattributes`로 줄바꿈을 고정했다(`.sh`·`.py`는 LF).
+- `pnpm doctor`는 윈도우에서 `winget` 설치 명령을 안내하고, iOS(Xcode) 항목은 "해당 없음(Mac 필요)"으로 표시한다.
+
+**윈도우에서 달라지는 점**
+- **iOS 빌드는 Mac이 필요하다.** 윈도우에서는 안드로이드만 가능하다.
+- 성능 수치는 기기마다 다르다. 노트북 GPU로 잰 값은 폰 성능의 대용이 아니다.
+- 벤치의 `GPU:` 줄이 `ANGLE (NVIDIA ...)`인지 `SwiftShader`/`Basic Render`인지 확인해야 한다. 소프트웨어 렌더링으로 잡히면 GPU 가속이 꺼진 것이다.

@@ -27,7 +27,7 @@ from pathlib import Path
 
 from websockets.sync.client import connect
 
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+from _common import CHROME_HELP, find_chrome, kill_tree, spawn, utf8_output
 
 
 def free_port() -> int:
@@ -47,14 +47,16 @@ def main() -> int:
     ap.add_argument("--clip", default="", help="x,y,w,h in CSS px")
     ap.add_argument("--until", default="", help="JS expression; after --wait, keep polling until it is true (max 15s), then capture")
     a = ap.parse_args()
+    utf8_output()
 
-    if not Path(CHROME).exists():
-        print("Google Chrome not found", file=sys.stderr)
+    chrome_exe = find_chrome()
+    if not chrome_exe:
+        print(CHROME_HELP, file=sys.stderr)
         return 2
     port = free_port()
-    with tempfile.TemporaryDirectory() as prof:
-        chrome = subprocess.Popen(
-            [CHROME, "--headless=new", f"--remote-debugging-port={port}", f"--user-data-dir={prof}", f"--window-size={a.size}",
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as prof:  # Windows may still hold files briefly
+        chrome = spawn(
+            [chrome_exe, "--headless=new", f"--remote-debugging-port={port}", f"--user-data-dir={prof}", f"--window-size={a.size}",
              "--hide-scrollbars", "--no-first-run", "--remote-allow-origins=*", "--force-prefers-color-scheme=light", "about:blank"],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
@@ -107,11 +109,7 @@ def main() -> int:
                     if i + 1 < a.frames:
                         time.sleep(a.every)
         finally:
-            chrome.terminate()
-            try:
-                chrome.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                chrome.kill()
+            kill_tree(chrome)
     return 0
 
 

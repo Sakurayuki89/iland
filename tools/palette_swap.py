@@ -22,6 +22,7 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw
+from _common import utf8_output
 
 
 def rgb_to_hsv(rgb: np.ndarray) -> np.ndarray:
@@ -96,6 +97,7 @@ def recolor(hsv, w, ref, target):
 
 
 def main():
+    utf8_output()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("atlas", nargs="?", default="assets/sprites/cat_base.png")
     p.add_argument("--palettes", default="data/palettes.json")
@@ -121,9 +123,9 @@ def main():
     refs = {k: ref_color(hsv, w) for k, w in mk.items()}
     print("reference (H°,S,V): " + "  ".join(f"{k}=({v[0]:.0f},{v[1]:.2f},{v[2]:.2f})" for k, v in refs.items()))
 
-    palettes = json.loads(Path(args.palettes).read_text())["palettes"]
-    meta = json.loads(meta_path.read_text())
-    anims = json.loads(anims_path.read_text())
+    palettes = json.loads(Path(args.palettes).read_text(encoding="utf-8"))["palettes"]
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    anims = json.loads(anims_path.read_text(encoding="utf-8"))
     variants = []
     for pal in palettes:
         out_rgb = rgb.copy()
@@ -137,12 +139,12 @@ def main():
         name = f"{args.prefix}_{pal['id']}"
         img.save(out_dir / f"{name}.png")
         m = json.loads(json.dumps(meta)); m["meta"]["image"] = f"{name}.png"
-        (out_dir / f"{name}.json").write_text(json.dumps(m, indent=2))
+        (out_dir / f"{name}.json").write_text(json.dumps(m, indent=2), encoding="utf-8")
         a = json.loads(json.dumps(anims))
         for an in a["anims"]:
             for fr in an["frames"]:
                 fr["key"] = name
-        (out_dir / f"{name}.anims.json").write_text(json.dumps(a, indent=2))
+        (out_dir / f"{name}.anims.json").write_text(json.dumps(a, indent=2), encoding="utf-8")
         variants.append((pal["id"], img))
         print(f"  {name}: spot={pal.get('spot','-')} scarf={pal.get('scarf','-')}")
 
