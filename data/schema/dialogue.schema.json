@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NPC dialogue",
+  "type": "object",
+  "required": ["id", "npc", "unit", "lines"],
+  "properties": {
+    "id":    { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "npc":   { "type": "string", "minLength": 1 },
+    "unit":  { "type": "integer", "minimum": 1 },
+    "names": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "lines": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "speaker", "en", "ko"],
+        "properties": {
+          "id":      { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "speaker": { "type": "string", "minLength": 1 },
+          "en":      { "type": "string", "minLength": 1 },
+          "ko":      { "type": "string", "minLength": 1 },
+          "audio":   { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

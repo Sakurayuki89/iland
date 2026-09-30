@@ -1,0 +1,26 @@
+{
+  "id": "flower_request",
+  "unit": 1,
+  "title": { "en": "A flower, please", "ko": "꽃 하나만 주세요" },
+  "party": { "min": 2, "max": 7 },
+  "roles": [
+    {
+      "role": "cook",
+      "goal": { "en": "I want a flower.", "ko": "나는 꽃이 필요해." },
+      "needs": ["flower"],
+      "phrases": [
+        { "en": "Do you have a flower?", "ko": "꽃 있어요?" },
+        { "en": "Thank you!", "ko": "고마워요!" }
+      ]
+    },
+    {
+      "role": "gardener",
+      "goal": { "en": "I have a flower.", "ko": "나는 꽃이 있어." },
+      "has": ["flower"],
+      "phrases": [
+        { "en": "Yes, I do.", "ko": "네, 있어요." },
+        { "en": "Here you are.", "ko": "여기 있어요." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "bad",
+  "npc": "Tester",
+  "unit": 1,
+  "lines": [
+    { "id": "ok_12", "speaker": "Tester", "en": "I see a cat and a bug and I see a cat", "ko": "정확히 열두 단어" },
+    { "id": "too_long", "speaker": "Tester", "en": "I see a cat and a bug and I see a cat and", "ko": "열세 단어" },
+    { "id": "bad_word", "speaker": "Tester", "en": "Do you see an elephant?", "ko": "코끼리 보이니?" },
+    { "id": "english_ko", "speaker": "Tester", "en": "I see a cat.", "ko": "I see a cat." },
+    { "id": "no_ko", "speaker": "Tester", "en": "I see a bug." },
+    { "id": "too_long", "speaker": "Tester", "en": "I see a cat.", "ko": "고양이가 보여." }
+  ]
+}

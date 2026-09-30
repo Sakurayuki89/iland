@@ -1,0 +1,12 @@
+{
+  "_comment": "Player looks. spot = tail tip + head/body patch color, scarf = neckerchief color. p1 keeps the original art.",
+  "palettes": [
+    { "id": "p1", "spot": "#F6A74B", "scarf": "#8BB055" },
+    { "id": "p2", "spot": "#5E5E66", "scarf": "#E5675C" },
+    { "id": "p3", "spot": "#8A5A3B", "scarf": "#4FA3D9" },
+    { "id": "p4", "spot": "#F3C64A", "scarf": "#B66BD1" },
+    { "id": "p5", "spot": "#E58BA8", "scarf": "#3FB8A3" },
+    { "id": "p6", "spot": "#45424A", "scarf": "#F2B135" },
+    { "id": "p7", "spot": "#B9B2A8", "scarf": "#E9853D" }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "sneak",
+  "label": "살금살금 걷기",
+  "duration": 1.2,
+  "loop": true,
+  "frames": [
+    {
+      "t": 0,
+      "frame": "walk_a"
+    },
+    {
+      "t": 0.2,
+      "frame": "idle"
+    },
+    {
+      "t": 0.6,
+      "frame": "walk_b"
+    },
+    {
+      "t": 0.8,
+      "frame": "idle"
+    }
+  ],
+  "tracks": {
+    "scaleY": [
+      {
+        "t": 0,
+        "v": 0.9
+      },
+      {
+        "t": 0.2,
+        "v": 0.86,
+        "ease": "sineOut"
+      },
+      {
+        "t": 0.6,
+        "v": 0.9,
+        "ease": "sineInOut"
+      },
+      {
+        "t": 0.8,
+        "v": 0.86,
+        "ease": "sineOut"
+      },
+      {
+        "t": 1.2,
+        "v": 0.9,
+        "ease": "sineInOut"
+      }
+    ],
+    "scaleX": [
+      {
+        "t": 0,
+        "v": 1.05
+      }
+    ],
+    "lean": [
+      {
+        "t": 0,
+        "v": 5
+      }
+    ],
+    "lift": [
+      {
+        "t": 0,
+        "v": 3
+      },
+      {
+        "t": 0.2,
+        "v": 0,
+        "ease": "sineIn"
+      },
+      {
+        "t": 0.6,
+        "v": 3,
+        "ease": "sineOut"
+      },
+      {
+        "t": 0.8,
+        "v": 0,
+        "ease": "sineIn"
+      },
+      {
+        "t": 1.2,
+        "v": 3,
+        "ease": "sineOut"
+      }
+    ]
+  },
+  "events": [],
+  "move": {
+    "speed": 40
+  }
+}

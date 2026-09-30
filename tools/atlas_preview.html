@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Preview</title>
+<style>
+  :root { --bg:#f6f3ea; --fg:#2b2620; --mut:#7a7163; --line:#d9d2c2; --acc:#d2691e; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1d1b18; --fg:#eee7da; --mut:#a79d8b; --line:#3a352d; --acc:#f0a35e; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.45 system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; }
+  h1 { font-size:16px; margin:0; }
+  header small { color:var(--mut); }
+  main { display:grid; grid-template-columns: 280px 1fr; gap:16px; padding:16px; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+  .panel { border:1px solid var(--line); border-radius:8px; padding:12px; display:grid; gap:10px; align-content:start; }
+  label { display:grid; gap:4px; color:var(--mut); font-size:12px; }
+  label.row { display:flex; gap:8px; align-items:center; }
+  select, input[type=text], input[type=range], button { font:inherit; color:inherit; }
+  select, input[type=text], button { background:transparent; border:1px solid var(--line); border-radius:6px; padding:6px 8px; }
+  button { cursor:pointer; } button:hover { border-color:var(--acc); }
+  #drop { border:2px dashed var(--line); border-radius:8px; padding:14px; text-align:center; color:var(--mut); }
+  #drop.over { border-color:var(--acc); color:var(--fg); }
+  #stage { display:grid; place-items:center; min-height:420px; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  canvas { image-rendering:auto; max-width:100%; }
+  #msg { min-height:1.4em; font-size:12px; color:var(--mut); }
+  #msg.err { color:#c0392b; }
+  .val { color:var(--fg); font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Atlas Preview</h1>
+  <small>sprite_slicer.py / palette_swap.py 결과 확인용 — 발 미끄러짐·프레임 튐을 눈으로 검사</small>
+</header>
+<main>
+  <section class="panel">
+    <div id="drop">PNG + <b>.json</b> + <b>.anims.json</b> 3개를<br>여기에 한꺼번에 드롭 (또는 클릭)</div>
+    <input id="files" type="file" multiple accept=".png,.json" hidden>
+    <label>또는 URL 베이스 (http 서버 필요)
+      <span class="row"><input id="base" type="text" value="../assets/sprites/cat_base" style="flex:1"><button id="loadUrl">불러오기</button></span>
+    </label>
+    <div id="msg"></div>
+    <hr style="border:0;border-top:1px solid var(--line);width:100%">
+    <label>방향
+      <select id="dir"><option>down</option><option>up</option><option>left</option><option>right</option></select></label>
+    <label>동작
+      <select id="act"><option>walk</option><option>idle</option><option>net</option></select></label>
+    <label>FPS <span class="val" id="fpsV"></span><input id="fps" type="range" min="1" max="24" value="8"></label>
+    <label>확대 <span class="val" id="scV"></span><input id="sc" type="range" min="1" max="4" step="0.5" value="2"></label>
+    <label>바닥 스크롤 속도 (px/s) <span class="val" id="gsV"></span><input id="gs" type="range" min="0" max="240" step="10" value="0"></label>
+    <label>배경
+      <select id="bgsel"><option value="checker">체크무늬</option><option value="white">흰색</option><option value="dark">어두움</option><option value="grass">잔디</option></select></label>
+    <label class="row"><input id="guides" type="checkbox" checked> 피벗/발 기준선</label>
+    <label class="row"><input id="onion" type="checkbox"> 어니언 스킨 (전 프레임 겹쳐 보기)</label>
+    <div class="row" style="display:flex;gap:8px">
+      <button id="pause">일시정지</button><button id="step">한 프레임</button>
+    </div>
+    <div id="info" style="color:var(--mut);font-size:12px"></div>
+  </section>
+  <section id="stage"><canvas id="cv" width="640" height="420"></canvas></section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const cv = $('cv'), ctx = cv.getContext('2d');
+let img = null, atlas = null, anims = null, paused = false, frameIdx = 0, acc = 0, last = 0, groundX = 0, stepOnce = false;
+const msg = (t, err) => { $('msg').textContent = t; $('msg').className = err ? 'err' : ''; };
+
+function bindVal(id, out, fmt = v => v) { const f = () => $(out).textContent = fmt($(id).value); $(id).addEventListener('input', f); f(); }
+bindVal('fps', 'fpsV'); bindVal('sc', 'scV', v => v + '×'); bindVal('gs', 'gsV');
+
+async function loadFiles(list) {
+  let png, json, animsJ;
+  for (const f of list) {
+    if (/\.png$/i.test(f.name)) png = f;
+    else if (/\.anims\.json$/i.test(f.name)) animsJ = f;
+    else if (/\.json$/i.test(f.name)) json = f;
+  }
+  if (!png || !json || !animsJ) return msg('PNG, .json, .anims.json 세 파일이 모두 필요합니다.', true);
+  const im = new Image();
+  im.src = URL.createObjectURL(png);
+  await im.decode();
+  setData(im, JSON.parse(await json.text()), JSON.parse(await animsJ.text()), png.name);
+}
+
+async function loadUrl() {
+  const base = $('base').value.trim();
+  try {
+    const [a, b] = await Promise.all([fetch(base + '.json'), fetch(base + '.anims.json')]);
+    if (!a.ok || !b.ok) throw new Error('HTTP ' + a.status + '/' + b.status);
+    const im = new Image(); im.src = base + '.png'; await im.decode();
+    setData(im, await a.json(), await b.json(), base);
+  } catch (e) {
+    msg('불러오기 실패: ' + e.message + ' (file:// 로 연 경우 파일 드롭을 쓰세요)', true);
+  }
+}
+
+function setData(im, a, an, name) {
+  img = im; atlas = a; anims = Object.fromEntries(an.anims.map(x => [x.key, x]));
+  frameIdx = 0; acc = 0;
+  const fs = a.meta.frame_size;
+  $('info').textContent = `${name} · frame ${fs.w}×${fs.h} · ${Object.keys(a.frames).length} frames`;
+  msg('불러옴');
+}
+
+function current() {
+  if (!anims) return null;
+  return anims[`${$('act').value}_${$('dir').value}`];
+}
+
+function drawFrame(name, flip, cx, baseY, scale, alpha) {
+  const entry = atlas.frames[name], fr = entry.frame;
+  const cell = entry.sourceSize || { w: fr.w, h: fr.h };          // logical cell
+  const off = entry.spriteSourceSize || { x: 0, y: 0 };           // where the trimmed image sits in it
+  const oy = atlas.meta.origin.y * cell.h * scale;                // pivot y inside the cell
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.translate(cx, baseY - oy);
+  if (flip) ctx.scale(-1, 1);
+  ctx.drawImage(img, fr.x, fr.y, fr.w, fr.h, (-cell.w / 2 + off.x) * scale, off.y * scale, fr.w * scale, fr.h * scale);
+  ctx.restore();
+}
+
+function background(baseY) {
+  const t = $('bgsel').value, W = cv.width, H = cv.height;
+  if (t === 'white') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); }
+  else if (t === 'dark') { ctx.fillStyle = '#23211f'; ctx.fillRect(0, 0, W, H); }
+  else if (t === 'grass') { ctx.fillStyle = '#9ccb62'; ctx.fillRect(0, 0, W, H); }
+  else {
+    const s = 16; for (let y = 0; y < H; y += s) for (let x = 0; x < W; x += s) {
+      ctx.fillStyle = ((x / s + y / s) & 1) ? '#e4e4e4' : '#f7f7f7'; ctx.fillRect(x, y, s, s); }
+  }
+  // scrolling ground ticks: if the feet slide against these, the walk cycle is wrong
+  ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, baseY + 0.5); ctx.lineTo(W, baseY + 0.5); ctx.stroke();
+  const gap = 48, off = ((groundX % gap) + gap) % gap;
+  for (let x = -off; x < W; x += gap) { ctx.beginPath(); ctx.moveTo(x, baseY); ctx.lineTo(x, baseY + 12); ctx.stroke(); }
+}
+
+function tick(ts) {
+  requestAnimationFrame(tick);
+  const dt = Math.min(0.1, (ts - last) / 1000 || 0); last = ts;
+  const W = cv.width, H = cv.height, baseY = H - 70;
+  const cur = current();
+  if (cur && img) {
+    const n = cur.frames.length, fps = +$('fps').value;
+    if (!paused && n > 1) { acc += dt * fps; while (acc >= 1) { acc -= 1; frameIdx = (frameIdx + 1) % n; } }
+    if (stepOnce && n > 1) { frameIdx = (frameIdx + 1) % n; stepOnce = false; }
+    frameIdx %= n;
+    // ground moves opposite to the facing direction (left-facing walker -> ground scrolls right)
+    const gsign = $('dir').value === 'left' ? 1 : -1;
+    if (!paused) groundX += gsign * (+$('gs').value) * dt;
+  }
+  background(baseY);
+  if (!cur || !img) { ctx.fillStyle = '#888'; ctx.font = '14px system-ui'; ctx.fillText('파일을 불러오세요', 20, 30); return; }
+  const scale = +$('sc').value, cx = W / 2;
+  if ($('onion').checked) cur.frames.forEach(f => drawFrame(f.frame, cur.flipX, cx, baseY, scale, 0.25));
+  const f = cur.frames[frameIdx];
+  drawFrame(f.frame, cur.flipX, cx, baseY, scale, 1);
+  if ($('guides').checked) {
+    ctx.strokeStyle = '#ff0050'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, baseY + 0.5); ctx.lineTo(W, baseY + 0.5); ctx.stroke();
+    ctx.strokeStyle = '#0078ff';
+    ctx.beginPath(); ctx.moveTo(cx + 0.5, 0); ctx.lineTo(cx + 0.5, H); ctx.stroke();
+    ctx.fillStyle = '#000'; ctx.font = '12px ui-monospace, monospace';
+    ctx.fillText(`${cur.key}  [${frameIdx + 1}/${cur.frames.length}] ${f.frame}${cur.flipX ? '  (flipX)' : ''}`, 10, 18);
+  }
+}
+
+$('drop').addEventListener('click', () => $('files').click());
+$('files').addEventListener('change', e => loadFiles([...e.target.files]));
+['dragenter', 'dragover'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.add('over'); }));
+['dragleave', 'drop'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.remove('over'); }));
+$('drop').addEventListener('drop', e => loadFiles([...e.dataTransfer.files]));
+$('loadUrl').addEventListener('click', loadUrl);
+$('pause').addEventListener('click', () => { paused = !paused; $('pause').textContent = paused ? '재생' : '일시정지'; });
+$('step').addEventListener('click', () => { paused = true; $('pause').textContent = '재생'; stepOnce = true; });
+['dir', 'act'].forEach(id => $(id).addEventListener('change', () => { frameIdx = 0; acc = 0; }));
+// optional presets, e.g. ?base=../assets/sprites/cat_p3&dir=left&act=walk&gs=120&onion=1&bg=grass
+const q = new URLSearchParams(location.search);
+for (const [k, id] of [['base', 'base'], ['dir', 'dir'], ['act', 'act'], ['fps', 'fps'], ['sc', 'sc'], ['gs', 'gs'], ['bg', 'bgsel']])
+  if (q.has(k)) $(id).value = q.get(k);
+if (q.has('onion')) $('onion').checked = q.get('onion') === '1';
+if (q.get('guides') === '0') $('guides').checked = false;
+['fps', 'sc', 'gs'].forEach(id => $(id).dispatchEvent(new Event('input')));
+if (location.protocol.startsWith('http')) loadUrl();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

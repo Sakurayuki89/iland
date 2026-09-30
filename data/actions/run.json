@@ -1,0 +1,83 @@
+{
+  "id": "run",
+  "label": "달리기",
+  "duration": 0.32,
+  "loop": true,
+  "frames": [
+    {
+      "t": 0,
+      "frame": "walk_a"
+    },
+    {
+      "t": 0.08,
+      "frame": "idle"
+    },
+    {
+      "t": 0.16,
+      "frame": "walk_b"
+    },
+    {
+      "t": 0.24,
+      "frame": "idle"
+    }
+  ],
+  "tracks": {
+    "lift": [
+      {
+        "t": 0,
+        "v": 10
+      },
+      {
+        "t": 0.08,
+        "v": 0,
+        "ease": "quadIn"
+      },
+      {
+        "t": 0.16,
+        "v": 10,
+        "ease": "quadOut"
+      },
+      {
+        "t": 0.24,
+        "v": 0,
+        "ease": "quadIn"
+      },
+      {
+        "t": 0.32,
+        "v": 10,
+        "ease": "quadOut"
+      }
+    ],
+    "lean": [
+      {
+        "t": 0,
+        "v": 9
+      }
+    ],
+    "scaleX": [
+      {
+        "t": 0,
+        "v": 1.04
+      }
+    ],
+    "scaleY": [
+      {
+        "t": 0,
+        "v": 0.97
+      }
+    ]
+  },
+  "events": [
+    {
+      "t": 0.08,
+      "fx": "dust"
+    },
+    {
+      "t": 0.24,
+      "fx": "dust"
+    }
+  ],
+  "move": {
+    "speed": 250
+  }
+}

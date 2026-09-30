@@ -1,0 +1,13 @@
+# Always-allowed function / classroom words (lower case, space separated, # = comment).
+# Content words (nouns for items, animals, colors...) belong in unit CSVs, not here.
+a an the
+i you we he she it they me my your our his her its
+am is are do does can will
+have has want like see look take give make get go come
+this that these those here there
+yes no please thank thanks hello hi bye welcome good nice
+what where who how
+and or but to of in on at for with
+one two three
+i'm it's what's let's don't can't that's you're here's
+ok okay oh wow

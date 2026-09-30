@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vocabulary row (one CSV line)",
+  "type": "object",
+  "required": ["id", "word", "ko", "unit"],
+  "properties": {
+    "id":    { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "word":  { "type": "string", "pattern": "^[a-z][a-z' -]*$" },
+    "ko":    { "type": "string", "minLength": 1 },
+    "unit":  { "type": "integer", "minimum": 1 },
+    "image": { "type": "string" },
+    "audio": { "type": "string" }
+  },
+  "additionalProperties": false
+}

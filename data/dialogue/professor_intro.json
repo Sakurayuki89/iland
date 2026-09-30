@@ -1,0 +1,13 @@
+{
+  "id": "professor_intro",
+  "npc": "Professor",
+  "unit": 1,
+  "names": ["Professor"],
+  "lines": [
+    { "id": "l01", "speaker": "Professor", "en": "Hello! I am the Professor.", "ko": "안녕! 나는 박사님이야.", "audio": "assets/audio/en/professor_intro_l01.mp3" },
+    { "id": "l02", "speaker": "Professor", "en": "Do you see a bug?", "ko": "벌레가 보이니?", "audio": "assets/audio/en/professor_intro_l02.mp3" },
+    { "id": "l03", "speaker": "Professor", "en": "Look! A butterfly!", "ko": "봐! 나비야!", "audio": "assets/audio/en/professor_intro_l03.mp3" },
+    { "id": "l04", "speaker": "Professor", "en": "Take the net, please.", "ko": "잠자리채를 들어 주렴.", "audio": "assets/audio/en/professor_intro_l04.mp3" },
+    { "id": "l05", "speaker": "Professor", "en": "Thank you!", "ko": "고마워!", "audio": "assets/audio/en/professor_intro_l05.mp3" }
+  ]
+}

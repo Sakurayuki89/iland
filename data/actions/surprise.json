@@ -1,0 +1,114 @@
+{
+  "id": "surprise",
+  "label": "놀람",
+  "duration": 0.9,
+  "loop": false,
+  "frames": [
+    {
+      "t": 0,
+      "frame": "idle"
+    },
+    {
+      "t": 0.06,
+      "frame": "surprised"
+    },
+    {
+      "t": 0.72,
+      "frame": "idle"
+    }
+  ],
+  "tracks": {
+    "lift": [
+      {
+        "t": 0,
+        "v": 0
+      },
+      {
+        "t": 0.06,
+        "v": 0
+      },
+      {
+        "t": 0.16,
+        "v": 26,
+        "ease": "quadOut"
+      },
+      {
+        "t": 0.32,
+        "v": 0,
+        "ease": "quadIn"
+      },
+      {
+        "t": 0.4,
+        "v": 5,
+        "ease": "quadOut"
+      },
+      {
+        "t": 0.48,
+        "v": 0,
+        "ease": "quadIn"
+      }
+    ],
+    "scaleY": [
+      {
+        "t": 0,
+        "v": 1
+      },
+      {
+        "t": 0.06,
+        "v": 0.88,
+        "ease": "quadOut"
+      },
+      {
+        "t": 0.16,
+        "v": 1.16,
+        "ease": "quadOut"
+      },
+      {
+        "t": 0.32,
+        "v": 0.92,
+        "ease": "quadIn"
+      },
+      {
+        "t": 0.48,
+        "v": 1,
+        "ease": "backOut"
+      }
+    ],
+    "scaleX": [
+      {
+        "t": 0,
+        "v": 1
+      },
+      {
+        "t": 0.06,
+        "v": 1.08,
+        "ease": "quadOut"
+      },
+      {
+        "t": 0.16,
+        "v": 0.9,
+        "ease": "quadOut"
+      },
+      {
+        "t": 0.32,
+        "v": 1.06,
+        "ease": "quadIn"
+      },
+      {
+        "t": 0.48,
+        "v": 1,
+        "ease": "backOut"
+      }
+    ]
+  },
+  "events": [
+    {
+      "t": 0.06,
+      "fx": "exclaim"
+    },
+    {
+      "t": 0.3,
+      "fx": "sweat"
+    }
+  ]
+}

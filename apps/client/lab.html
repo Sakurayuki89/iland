@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Action Lab</title>
+    <style>
+      :root { --bg: #f6f3ea; --panel: #fffdf7; --fg: #2b2620; --mut: #7a7163; --line: #d9d2c2; --acc: #c8561e; --err: #c0392b; }
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #1d1b18; --panel: #26231f; --fg: #eee7da; --mut: #a79d8b; --line: #3a352d; --acc: #f0a35e; --err: #ff7b6b; }
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; }
+      body { background: var(--bg); color: var(--fg); font: 13px/1.45 system-ui, sans-serif; display: grid; grid-template-rows: auto 1fr auto; }
+      header { display: flex; gap: 12px; align-items: baseline; padding: 8px 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+      h1 { font-size: 15px; margin: 0; }
+      #status { color: var(--mut); font-variant-numeric: tabular-nums; }
+      #msg { margin-left: auto; color: var(--mut); }
+      #msg.err { color: var(--err); }
+      main { display: grid; grid-template-columns: 250px minmax(0, 1fr) 280px; gap: 10px; padding: 10px; min-height: 0; }
+      #stage { display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); overflow: hidden; min-height: 410px; }
+      #ctl, #insp { overflow: auto; }
+      #tl { display: grid; grid-template-columns: 190px minmax(0, 1fr); border-top: 1px solid var(--line); background: var(--panel); }
+      #labels { border-right: 1px solid var(--line); }
+      #labels .head { height: 30px; display: flex; align-items: center; padding: 0 8px; color: var(--mut); font-size: 11px; }
+      #labels .row { height: 26px; display: grid; grid-template-columns: 1fr auto 24px; align-items: center; gap: 6px; padding: 0 6px 2px 8px; }
+      #labels .row b { font-weight: 600; }
+      #labels .row span { color: var(--mut); font-variant-numeric: tabular-nums; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 86px; }
+      #labels button { width: 22px; height: 20px; padding: 0; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: inherit; cursor: pointer; }
+      #labels button:hover { border-color: var(--acc); color: var(--acc); }
+      #timeline { height: 272px; position: relative; }
+      @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Action Lab</h1>
+      <span id="status"></span>
+      <span id="msg"></span>
+    </header>
+    <main>
+      <div id="ctl"></div>
+      <div id="stage"><div id="game"></div></div>
+      <div id="insp"></div>
+    </main>
+    <section id="tl">
+      <div id="labels"></div>
+      <div id="timeline"></div>
+    </section>
+    <script type="module" src="/src/lab/main.ts"></script>
+  </body>
+</html>

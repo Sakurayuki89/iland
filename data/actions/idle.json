@@ -1,0 +1,47 @@
+{
+  "id": "idle",
+  "label": "대기 (숨쉬기)",
+  "duration": 1.6,
+  "loop": true,
+  "frames": [
+    {
+      "t": 0,
+      "frame": "idle"
+    }
+  ],
+  "tracks": {
+    "scaleY": [
+      {
+        "t": 0,
+        "v": 1
+      },
+      {
+        "t": 0.8,
+        "v": 1.03,
+        "ease": "sineInOut"
+      },
+      {
+        "t": 1.6,
+        "v": 1,
+        "ease": "sineInOut"
+      }
+    ],
+    "scaleX": [
+      {
+        "t": 0,
+        "v": 1
+      },
+      {
+        "t": 0.8,
+        "v": 0.985,
+        "ease": "sineInOut"
+      },
+      {
+        "t": 1.6,
+        "v": 1,
+        "ease": "sineInOut"
+      }
+    ]
+  },
+  "events": []
+}

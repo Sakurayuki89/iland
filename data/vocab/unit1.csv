@@ -1,0 +1,13 @@
+id,word,ko,unit,image,audio
+cat,cat,고양이,1,assets/words/cat.png,assets/audio/en/cat.mp3
+bug,bug,벌레,1,assets/words/bug.png,assets/audio/en/bug.mp3
+butterfly,butterfly,나비,1,assets/words/butterfly.png,assets/audio/en/butterfly.mp3
+flower,flower,꽃,1,assets/words/flower.png,assets/audio/en/flower.mp3
+leaf,leaf,나뭇잎,1,assets/words/leaf.png,assets/audio/en/leaf.mp3
+seed,seed,씨앗,1,assets/words/seed.png,assets/audio/en/seed.mp3
+water,water,물,1,assets/words/water.png,assets/audio/en/water.mp3
+net,net,잠자리채,1,assets/words/net.png,assets/audio/en/net.mp3
+jar,jar,유리병,1,assets/words/jar.png,assets/audio/en/jar.mp3
+tent,tent,텐트,1,assets/words/tent.png,assets/audio/en/tent.mp3
+tree,tree,나무,1,assets/words/tree.png,assets/audio/en/tree.mp3
+sun,sun,해,1,assets/words/sun.png,assets/audio/en/sun.mp3
