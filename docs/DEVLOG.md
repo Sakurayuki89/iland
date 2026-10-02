@@ -96,11 +96,13 @@ Island를 만드는 과정을 순서대로 기록한다. 의미 있는 결과가
 > "blender로 프리비즈 만들어서 higgsfield로 영상 만들라는 거야"
 
 1. **프리비즈 (Blender 4.2, `tools/blender_demo.py`)**: 실제 게임 에셋(타일·소품·고양이·나비 아틀라스·FX·UI)을 평면으로 깔고, 게임과 같은 탑다운 직교 카메라로 12초를 렌더링했다. 장면 순서는 걷기 → "!" → 포충망으로 잡기 → 단어 카드 → 밤 전환이다. 구도·동선·타이밍을 정하는 것이 목적이라 결함은 그대로 남아 있다(텐트 옆 검은 그림자, 덩어리진 불빛).
-2. **최종 영상 (Higgsfield)**: 프리비즈를 동작 참고 영상으로, Grok 포획 장면과 고양이 시트를 그림체 참고로 넣어 다시 그렸다. Seedance 2.5(omni reference)는 사유 없이 실패해서 Kling 3.0 Omni Edit로 다시 생성하고 있다.
+2. **최종 영상 (Higgsfield)**: 프리비즈를 동작 참고 영상으로, Grok 포획 장면과 고양이 시트를 그림체 참고로 넣어 다시 그렸다. Seedance 2.5(omni reference)는 사유 없이 실패해서 Kling 3.0 Omni Edit로 만들었다(24크레딧).
 
-![프리비즈](img/showcase/previs_poster.jpg)
+| 프리비즈 (Blender) | 최종 (Higgsfield Kling) |
+|---|---|
+| ![프리비즈](img/showcase/previs_poster.jpg) | ![최종](img/showcase/demo_poster.jpg) |
 
-최종 영상은 생성이 끝나는 대로 이 자리에 추가한다.
+영상: [프리비즈](img/showcase/previs.mp4) · [최종](img/showcase/demo.mp4). 최종 영상에서 텐트 옆 검은 그림자가 사라졌고, 밤 장면은 파란 톤에 반딧불이와 불빛 후광이 제대로 들어갔다.
 
 배운 점: 생성형 영상은 **프리비즈가 구도와 타이밍을 고정**해 주면 장면이 흔들리지 않는다. 오류는 프리비즈 단계에서 고치지 말고 최종 생성 프롬프트에 적는다.
 
