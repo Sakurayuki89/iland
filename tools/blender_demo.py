@@ -1,7 +1,7 @@
 """Render the Island failed-catch showcase: approach, three gauge misses, a butterfly
 flee, a puzzled cat, then the dusk-to-night firefly ending.
 
-Run: "C:/Program Files/Blender Foundation/Blender 4.2/blender.exe" -b --factory-startup -P tools/blender_demo.py -- --out docs/img/showcase/previs.mp4
+Run: "C:/Program Files/Blender Foundation/Blender 4.2/blender.exe" -b --factory-startup -P tools/blender_demo.py -- --out docs/img/devlog/previs.mp4
 """
 
 import json
@@ -22,7 +22,7 @@ def argument(name, fallback):
     return Path(args[args.index(name) + 1]).resolve() if name in args else Path(fallback).resolve()
 
 
-OUT = argument("--out", ROOT / "docs/img/showcase/previs.mp4")
+OUT = argument("--out", ROOT / "docs/img/devlog/previs.mp4")
 
 
 def f(seconds):

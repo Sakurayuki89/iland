@@ -154,7 +154,7 @@ def build_index(zones: list[dict], species: list[dict], npcs: list[dict]) -> str
         "catch_fx": "포획 이펙트",
         "night": "밤 풍경",
         "rain": "비 오는 날 캠프",
-        "previs": "게임 시연 영상 — 게이지 바로 3번 놓치고 4번째에 나비가 도망 (Blender)",
+        "demo": "게임 시연 영상 — 게이지 바로 3번 놓치고 4번째에 나비가 도망 (Higgsfield Kling, Blender 프리비즈 기반)",
         "gear_rewards": "장비 3단계(장갑·신발·채집망)와 보상 아이콘 (Grok)",
     }
     if showcase_dir.is_dir():
