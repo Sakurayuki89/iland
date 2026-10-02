@@ -89,6 +89,9 @@ ICON_SHEETS: dict[str, tuple[str, int, int, str, int | None, list]] = {
         f"flower_{c}_{s}" for c in ("pink", "blue", "yellow", "white") for s in range(5)]),
     "words": ("content/words_e318408f.png", 3, 4, "words", 512, [
         "cat", "bug", "butterfly", "flower", "leaf", "seed", "water", "net", "jar", "tent", "tree", "sun"]),
+    # dex icons for the rain/lake creatures: idle cells cut from their action sheets (insect_{worm,snail,...})
+    "insect_icons_rain": ("content/insects_rain_icons.png", 2, 2, "insects/icons", 256, [
+        "worm", "snail", "water_beetle", "water_strider"]),
     "words_rain": ("content/words_rain_fbaf29bc.png", 2, 2, "words", 512, [
         "worm", "snail", "water_beetle", "water_strider"]),
     # catch gauge + speaking UI (docs/CATCH_AND_SPEAKING.md)
