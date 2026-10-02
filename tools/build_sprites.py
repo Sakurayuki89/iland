@@ -52,10 +52,13 @@ JOBS: dict[str, list[str]] = {
 # Insects: 3x4 like the cats; walk = flap/step loop, 4th column = flee. Heights are 2x world px
 # (docs/ISLAND_LAYOUT.md: insects are 24-48 world px so kids can tap them).
 INSECT_HEIGHT = {"butterfly": 70, "bee": 56, "dragonfly": 80, "grasshopper": 56, "rhinobeetle": 64,
-                 "stagbeetle": 70, "firefly": 50, "cricket": 56, "moth": 70, "jewelbeetle": 56}
+                 "stagbeetle": 70, "firefly": 50, "cricket": 56, "moth": 70, "jewelbeetle": 56,
+                 # rain / lake creatures (docs/WEATHER_AND_SPAWN.md §6), Grok sheets at 1280x720
+                 "worm": 50, "snail": 56, "waterbeetle": 56, "waterstrider": 60}
 INSECT_SHEET = {"butterfly": "9fedf07a", "bee": "fb563e61", "dragonfly": "3c33ec81", "grasshopper": "85f3fa3f",
                 "rhinobeetle": "7879dc56", "stagbeetle": "ad75853b", "firefly": "d471284d", "cricket": "dde75699",
-                "moth": "847801db", "jewelbeetle": "4f8e16af"}
+                "moth": "847801db", "jewelbeetle": "4f8e16af",
+                "worm": "40301fe4", "snail": "baac48e1", "waterbeetle": "0ee04ae0", "waterstrider": "87cf2c39"}
 for _name, _h in INSECT_HEIGHT.items():
     JOBS[f"insect_{_name}"] = [f"content/insect_{_name}_{INSECT_SHEET[_name]}.png", "-o", "assets/insects",
                                "--key", f"insect_{_name}", "--action", "flee", "--char-height", str(_h),

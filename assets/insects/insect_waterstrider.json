@@ -1,0 +1,313 @@
+{
+  "frames": {
+    "down_idle": {
+      "frame": {
+        "x": 613,
+        "y": 2,
+        "w": 83,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 16,
+        "y": 10,
+        "w": 83,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "down_walk_a": {
+      "frame": {
+        "x": 443,
+        "y": 2,
+        "w": 83,
+        "h": 65
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 16,
+        "y": 9,
+        "w": 83,
+        "h": 65
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "down_walk_b": {
+      "frame": {
+        "x": 528,
+        "y": 2,
+        "w": 83,
+        "h": 65
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 16,
+        "y": 9,
+        "w": 83,
+        "h": 65
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "down_flee": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 95,
+        "h": 72
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 2,
+        "w": 95,
+        "h": 72
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "up_idle": {
+      "frame": {
+        "x": 192,
+        "y": 2,
+        "w": 82,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 29,
+        "y": 6,
+        "w": 82,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "up_walk_a": {
+      "frame": {
+        "x": 276,
+        "y": 2,
+        "w": 81,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 19,
+        "y": 6,
+        "w": 81,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "up_walk_b": {
+      "frame": {
+        "x": 359,
+        "y": 2,
+        "w": 82,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 29,
+        "y": 6,
+        "w": 82,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "up_flee": {
+      "frame": {
+        "x": 99,
+        "y": 2,
+        "w": 91,
+        "h": 71
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 29,
+        "y": 3,
+        "w": 91,
+        "h": 71
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "left_idle": {
+      "frame": {
+        "x": 792,
+        "y": 2,
+        "w": 86,
+        "h": 57
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 6,
+        "y": 17,
+        "w": 86,
+        "h": 57
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "left_walk_a": {
+      "frame": {
+        "x": 880,
+        "y": 2,
+        "w": 86,
+        "h": 57
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 17,
+        "w": 86,
+        "h": 57
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "left_walk_b": {
+      "frame": {
+        "x": 2,
+        "y": 76,
+        "w": 87,
+        "h": 56
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 18,
+        "w": 87,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    },
+    "left_flee": {
+      "frame": {
+        "x": 698,
+        "y": 2,
+        "w": 92,
+        "h": 62
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 12,
+        "w": 92,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 76
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.9474
+      }
+    }
+  },
+  "meta": {
+    "app": "island/tools/sprite_slicer.py",
+    "image": "insect_waterstrider.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 968,
+      "h": 134
+    },
+    "scale": "1",
+    "source": "insect_waterstrider_87cf2c39.png",
+    "extra": [],
+    "frame_size": {
+      "w": 128,
+      "h": 76
+    },
+    "char_height": 60,
+    "origin": {
+      "x": 0.5,
+      "y": 0.9474
+    }
+  }
+}
