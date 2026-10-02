@@ -157,6 +157,13 @@ def build_index(zones: list[dict], species: list[dict], npcs: list[dict]) -> str
         "demo": "게임 시연 영상 — 게이지 바로 3번 놓치고 4번째에 나비가 도망 (Higgsfield Kling, Blender 프리비즈 기반)",
         "gear_rewards": "장비 3단계(장갑·신발·채집망)와 보상 아이콘 (Grok)",
     }
+    showcase_docs = {
+        "rain": ("비는 섬 일부에만 내리고 옮겨 간다. 비 오는 구역엔 지렁이·달팽이가 나오고 나는 곤충은 숨는다.", "docs/WEATHER_AND_SPAWN.html#rain"),
+        "night": ("밤에는 장수풍뎅이·사슴벌레·반딧불이·나방이 나온다. 섬 시계는 20분에 하루가 돈다.", "docs/WEATHER_AND_SPAWN.html#time"),
+        "catch_fx": ("게이지 바 판정과 성공·도망 연출", "docs/REWARD_SYSTEM.html"),
+        "gear_rewards": ("장비 3단계와 보상 체계", "docs/REWARD_SYSTEM.html"),
+        "demo": ("게이지 바 3번 실패 → 4번째에 도망", "docs/REWARD_SYSTEM.html"),
+    }
     if showcase_dir.is_dir():
         media_files = [path for path in showcase_dir.iterdir() if path.is_file()]
         has_video = any(path.suffix.lower() == ".mp4" for path in media_files)
@@ -173,12 +180,16 @@ def build_index(zones: list[dict], species: list[dict], npcs: list[dict]) -> str
             if has_video and (stem.endswith("_poster") or stem.endswith(("_day", "_night"))):
                 continue
             caption = captions.get(stem, stem)
+            description, href = showcase_docs.get(stem, (None, None))
+            copy = f'<figcaption>{esc(caption)}</figcaption>'
+            if description and href:
+                copy += f'<p class="showcase-description">{esc(description)}</p><a class="showcase-link" href="{esc(href)}">기획 보기 →</a>'
             if suffix in {".jpg", ".jpeg", ".png", ".webp"}:
-                showcase.append(f'<figure class="showcase-tile"><a href="img/showcase/{esc(media.name)}" target="_blank" rel="noopener"><img loading="lazy" src="img/showcase/{esc(media.name)}" alt="{esc(caption)}"></a><figcaption>{esc(caption)}</figcaption></figure>')
+                showcase.append(f'<figure class="showcase-tile"><a href="img/showcase/{esc(media.name)}" target="_blank" rel="noopener"><img loading="lazy" src="img/showcase/{esc(media.name)}" alt="{esc(caption)}"></a>{copy}</figure>')
             elif suffix == ".mp4":
                 poster_file = showcase_dir / f"{stem}_poster.jpg"
                 poster = f"img/showcase/{poster_file.name}" if poster_file.exists() else "img/island_overview.png"
-                showcase.append(f'<figure class="showcase-video"><video controls preload="metadata" poster="{poster}"><source src="img/showcase/{esc(media.name)}" type="video/mp4"></video><figcaption>{esc(caption)}</figcaption></figure>')
+                showcase.append(f'<figure class="showcase-video"><video controls preload="metadata" poster="{poster}"><source src="img/showcase/{esc(media.name)}" type="video/mp4"></video>{copy}</figure>')
     showcase_html = "".join(showcase) or "<p>쇼케이스 자료가 준비되면 이곳에 자동으로 나타납니다.</p>"
     return page("섬 지도", f"""
 <section class="hero"><div><p class="eyebrow">영어로 함께 탐험하는 작은 섬</p><h1>Island</h1>
@@ -442,8 +453,11 @@ STYLE = r"""
 .document table.doc-image-table { display:table; width:100%; max-width:100%; table-layout:fixed; }
 .showcase-video { grid-column:1/-1; }
 .showcase-video video { display:block; width:100%; aspect-ratio:16/9; object-fit:contain; }
-.showcase-tile a { display:block; aspect-ratio:16/9; overflow:hidden; border-radius:14px; background:var(--card); }
+.showcase-tile > a:not(.showcase-link) { display:block; aspect-ratio:16/9; overflow:hidden; border-radius:14px; background:var(--card); }
 .showcase-tile img { display:block; width:100%; height:100%; object-fit:contain; }
+.showcase-tile,.showcase-video { min-width:0; }
+.showcase-description { margin:.2rem 0; font-size:.82rem; line-height:1.45; font-style:normal; overflow-wrap:anywhere; }
+.showcase-link { display:inline-flex; max-width:100%; margin-top:.1rem; padding:.18em .6em; border:1px solid var(--line); border-radius:999px; background:var(--card); font-size:.78rem; font-weight:700; line-height:1.35; text-decoration:underline; text-underline-offset:2px; }
 @media (max-width:680px) {
   body { font-size:16px; line-height:1.7; }
   header, main, footer { padding-inline:16px; }
