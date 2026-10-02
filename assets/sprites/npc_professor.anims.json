@@ -1,0 +1,209 @@
+{
+  "anims": [
+    {
+      "key": "idle_down",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "down_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_down",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "down_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "down_walk_a"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "down_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "down_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "talk_down",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "down_talk"
+        }
+      ]
+    },
+    {
+      "key": "idle_up",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "up_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_up",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "up_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "up_walk_a"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "up_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "up_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "talk_up",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "up_talk"
+        }
+      ]
+    },
+    {
+      "key": "idle_left",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "left_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_left",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "left_walk_a"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "left_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "talk_left",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "left_talk"
+        }
+      ]
+    },
+    {
+      "key": "idle_right",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": true,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "left_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_right",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": true,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "left_walk_a"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_professor",
+          "frame": "left_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "talk_right",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": true,
+      "frames": [
+        {
+          "key": "npc_professor",
+          "frame": "left_talk"
+        }
+      ]
+    }
+  ],
+  "globalTimeScale": 1
+}

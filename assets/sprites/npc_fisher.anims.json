@@ -1,0 +1,209 @@
+{
+  "anims": [
+    {
+      "key": "idle_down",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "down_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_down",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "down_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "down_walk_a"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "down_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "down_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "cast_down",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "down_cast"
+        }
+      ]
+    },
+    {
+      "key": "idle_up",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "up_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_up",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "up_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "up_walk_a"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "up_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "up_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "cast_up",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "up_cast"
+        }
+      ]
+    },
+    {
+      "key": "idle_left",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "left_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_left",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "left_walk_a"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "left_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "cast_left",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": false,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "left_cast"
+        }
+      ]
+    },
+    {
+      "key": "idle_right",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": -1,
+      "flipX": true,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "left_idle"
+        }
+      ]
+    },
+    {
+      "key": "walk_right",
+      "type": "frame",
+      "frameRate": 8,
+      "repeat": -1,
+      "flipX": true,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "left_walk_a"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "left_idle"
+        },
+        {
+          "key": "npc_fisher",
+          "frame": "left_walk_b"
+        }
+      ]
+    },
+    {
+      "key": "cast_right",
+      "type": "frame",
+      "frameRate": 1,
+      "repeat": 0,
+      "flipX": true,
+      "frames": [
+        {
+          "key": "npc_fisher",
+          "frame": "left_cast"
+        }
+      ]
+    }
+  ],
+  "globalTimeScale": 1
+}

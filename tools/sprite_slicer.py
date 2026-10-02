@@ -6,7 +6,7 @@
 """Slice an AI-generated character sheet into an aligned Phaser atlas.
 
 Input : a sheet with a white background laid out as ROWS x COLS cells
-        (default 3 x 4: rows = down/up/left, cols = idle/walk_a/walk_b/net).
+        (default 3 x 4: rows = down/up/left, cols = idle/walk_a/walk_b/net; --action renames net).
 Output: <key>.png (atlas), <key>.json (Phaser hash atlas), <key>.anims.json
         (Phaser anims.fromJSON format + flipX), <key>_contact.png (review sheet).
 
@@ -220,7 +220,8 @@ def build(args) -> None:
     frames = [crop_cell(rgba, lab, c) for c in cells]
 
     # AI sheets sometimes draw a cell facing the wrong way; mirror those so a row faces one direction.
-    cell_names = [f"{ROW_NAMES[i // args.cols]}_{COL_NAMES[i % args.cols]}" for i in range(len(frames))]
+    col_names = COL_NAMES[:3] + [args.action]
+    cell_names = [f"{ROW_NAMES[i // args.cols]}_{col_names[i % args.cols]}" for i in range(len(frames))]
     extras = []  # (path, column names); a column called "ref" is a standing reference used only for scale
     for spec in args.extra:
         path, _, cols_s = spec.rpartition(":")
@@ -360,7 +361,7 @@ def build(args) -> None:
         anims.append(anim(f"idle_{direction}", [f"{src_dir}_idle"], 1, -1, flip))
         anims.append(anim(f"walk_{direction}", [f"{src_dir}_idle", f"{src_dir}_walk_a",
                                                 f"{src_dir}_idle", f"{src_dir}_walk_b"], args.walk_fps, -1, flip))
-        anims.append(anim(f"net_{direction}", [f"{src_dir}_net"], 1, 0, flip))
+        anims.append(anim(f"{args.action}_{direction}", [f"{src_dir}_{args.action}"], 1, 0, flip))
     (out / f"{key}.anims.json").write_text(json.dumps({"anims": anims, "globalTimeScale": 1}, indent=2), encoding="utf-8")
 
     make_contact(final, names, fw, fh, piv_y_final, args.cols, out / f"{key}_contact.png")
@@ -431,6 +432,7 @@ def main():
     p.add_argument("--pad", type=int, default=12, help="transparent padding (source px)")
     p.add_argument("--pivot-x", choices=["register", "feet"], default="register")
     p.add_argument("--walk-fps", type=int, default=8)
+    p.add_argument("--action", default="net", help="name of the 4th column (one-shot pose), e.g. talk for NPCs, flee for insects")
     p.add_argument("--atlas-width", type=int, default=1024, help="max atlas width in px (frames are trimmed and packed)")
     p.add_argument("--flip", default="", help="comma-separated cells to mirror, e.g. left_walk_a,left_walk_b")
     p.add_argument("--extra", action="append", default=[], metavar="PATH:COLS",

@@ -1,0 +1,704 @@
+{
+  "buildings/cabin": {
+    "file": "env/buildings/cabin.png",
+    "world": [
+      219,
+      230
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/campfire": {
+    "file": "env/buildings/campfire.png",
+    "world": [
+      150,
+      95
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/cottage": {
+    "file": "env/buildings/cottage.png",
+    "world": [
+      261,
+      250
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/market_stall": {
+    "file": "env/buildings/market_stall.png",
+    "world": [
+      179,
+      170
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/research_hut": {
+    "file": "env/buildings/research_hut.png",
+    "world": [
+      272,
+      260
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/shed": {
+    "file": "env/buildings/shed.png",
+    "world": [
+      222,
+      190
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/tent": {
+    "file": "env/buildings/tent.png",
+    "world": [
+      199,
+      170
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/treehouse": {
+    "file": "env/buildings/treehouse.png",
+    "world": [
+      262,
+      300
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "buildings/well": {
+    "file": "env/buildings/well.png",
+    "world": [
+      136,
+      150
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_buildings_07906417.png"
+  },
+  "flowers/cosmos": {
+    "file": "env/flowers/cosmos.png",
+    "world": [
+      38,
+      45
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/daisy": {
+    "file": "env/flowers/daisy.png",
+    "world": [
+      36,
+      42
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/hydrangea": {
+    "file": "env/flowers/hydrangea.png",
+    "world": [
+      52,
+      50
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/lavender": {
+    "file": "env/flowers/lavender.png",
+    "world": [
+      37,
+      50
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/marigold": {
+    "file": "env/flowers/marigold.png",
+    "world": [
+      38,
+      42
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/rose": {
+    "file": "env/flowers/rose.png",
+    "world": [
+      44,
+      48
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/sunflower": {
+    "file": "env/flowers/sunflower.png",
+    "world": [
+      62,
+      75
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/tulip": {
+    "file": "env/flowers/tulip.png",
+    "world": [
+      35,
+      45
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "flowers/wildflowers": {
+    "file": "env/flowers/wildflowers.png",
+    "world": [
+      39,
+      40
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_flowers_dfe17778.png"
+  },
+  "plants/berry_bush": {
+    "file": "env/plants/berry_bush.png",
+    "world": [
+      66,
+      65
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/bush": {
+    "file": "env/plants/bush.png",
+    "world": [
+      65,
+      60
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/clover": {
+    "file": "env/plants/clover.png",
+    "world": [
+      38,
+      35
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/fern": {
+    "file": "env/plants/fern.png",
+    "world": [
+      54,
+      55
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/flower_bush": {
+    "file": "env/plants/flower_bush.png",
+    "world": [
+      66,
+      65
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/grass_tuft": {
+    "file": "env/plants/grass_tuft.png",
+    "world": [
+      31,
+      30
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/reeds": {
+    "file": "env/plants/reeds.png",
+    "world": [
+      54,
+      75
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/sprout": {
+    "file": "env/plants/sprout.png",
+    "world": [
+      22,
+      22
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "plants/tall_grass": {
+    "file": "env/plants/tall_grass.png",
+    "world": [
+      44,
+      55
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_bushes_e8e4d86b.png"
+  },
+  "props/barrel": {
+    "file": "env/props/barrel.png",
+    "world": [
+      39,
+      55
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/bench": {
+    "file": "env/props/bench.png",
+    "world": [
+      110,
+      101
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/bulletin_board": {
+    "file": "env/props/bulletin_board.png",
+    "world": [
+      91,
+      110
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/crates": {
+    "file": "env/props/crates.png",
+    "world": [
+      62,
+      75
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/fence": {
+    "file": "env/props/fence.png",
+    "world": [
+      96,
+      74
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/garden_plot": {
+    "file": "env/props/garden_plot.png",
+    "world": [
+      144,
+      108
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/lantern_post": {
+    "file": "env/props/lantern_post.png",
+    "world": [
+      76,
+      130
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/mailbox": {
+    "file": "env/props/mailbox.png",
+    "world": [
+      50,
+      90
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "props/signpost": {
+    "file": "env/props/signpost.png",
+    "world": [
+      75,
+      110
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_props_0fac428a.png"
+  },
+  "trees/apple_tree": {
+    "file": "env/trees/apple_tree.png",
+    "world": [
+      201,
+      230
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/autumn_tree": {
+    "file": "env/trees/autumn_tree.png",
+    "world": [
+      204,
+      230
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/cherry_tree": {
+    "file": "env/trees/cherry_tree.png",
+    "world": [
+      210,
+      230
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/log": {
+    "file": "env/trees/log.png",
+    "world": [
+      120,
+      88
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/oak": {
+    "file": "env/trees/oak.png",
+    "world": [
+      218,
+      230
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/old_tree": {
+    "file": "env/trees/old_tree.png",
+    "world": [
+      299,
+      300
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/pine": {
+    "file": "env/trees/pine.png",
+    "world": [
+      184,
+      260
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/sapling": {
+    "file": "env/trees/sapling.png",
+    "world": [
+      47,
+      70
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "trees/stump": {
+    "file": "env/trees/stump.png",
+    "world": [
+      87,
+      70
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_trees_12e42645.png"
+  },
+  "water/bridge": {
+    "file": "env/water/bridge.png",
+    "world": [
+      200,
+      143
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/dock": {
+    "file": "env/water/dock.png",
+    "world": [
+      170,
+      140
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/lake": {
+    "file": "env/water/lake.png",
+    "world": [
+      520,
+      422
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/lily_pads": {
+    "file": "env/water/lily_pads.png",
+    "world": [
+      100,
+      72
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/mossy_rock": {
+    "file": "env/water/mossy_rock.png",
+    "world": [
+      129,
+      110
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/pond": {
+    "file": "env/water/pond.png",
+    "world": [
+      260,
+      218
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/rowboat": {
+    "file": "env/water/rowboat.png",
+    "world": [
+      150,
+      106
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/stepping_stones": {
+    "file": "env/water/stepping_stones.png",
+    "world": [
+      120,
+      87
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  },
+  "water/waterfall": {
+    "file": "env/water/waterfall.png",
+    "world": [
+      206,
+      200
+    ],
+    "scale": 0.5,
+    "origin": [
+      0.5,
+      0.95
+    ],
+    "source": "content/env_water_bea22f81.png"
+  }
+}

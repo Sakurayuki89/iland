@@ -42,7 +42,24 @@ JOBS: dict[str, list[str]] = {
         "--extra", "content/siamese_expr_83bac47a.png:ref,joy,surprised",
         "--extra", "content/siamese_swing_9373c1b6.png:ref,net_up,net_down",
     ],
+    # NPCs: 4th column is a talk pose. The collector is a kitten, so it stands shorter.
+    "npc_professor": ["content/npc_professor_ff4a5bc6.png", "--key", "npc_professor", "--action", "talk"],
+    "npc_collector": ["content/npc_collector_13bc7d95.png", "--key", "npc_collector", "--action", "cheer",
+                      "--char-height", "160"],
+    "npc_fisher": ["content/npc_fisher_9becd3ba.png", "--key", "npc_fisher", "--action", "cast"],
 }
+
+# Insects: 3x4 like the cats; walk = flap/step loop, 4th column = flee. Heights are 2x world px
+# (docs/ISLAND_LAYOUT.md: insects are 24-48 world px so kids can tap them).
+INSECT_HEIGHT = {"butterfly": 70, "bee": 56, "dragonfly": 80, "grasshopper": 56, "rhinobeetle": 64,
+                 "stagbeetle": 70, "firefly": 50, "cricket": 56, "moth": 70, "jewelbeetle": 56}
+INSECT_SHEET = {"butterfly": "9fedf07a", "bee": "fb563e61", "dragonfly": "3c33ec81", "grasshopper": "85f3fa3f",
+                "rhinobeetle": "7879dc56", "stagbeetle": "ad75853b", "firefly": "d471284d", "cricket": "dde75699",
+                "moth": "847801db", "jewelbeetle": "4f8e16af"}
+for _name, _h in INSECT_HEIGHT.items():
+    JOBS[f"insect_{_name}"] = [f"content/insect_{_name}_{INSECT_SHEET[_name]}.png", "-o", "assets/insects",
+                               "--key", f"insect_{_name}", "--action", "flee", "--char-height", str(_h),
+                               "--min-area", "800", "--pivot-x", "feet"]  # wings change shape: centre, don't register
 
 
 def uv_run(script: str, *args: str) -> int:

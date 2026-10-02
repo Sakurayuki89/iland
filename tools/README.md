@@ -7,6 +7,8 @@ Island 제작용 자체 툴. 모두 **Python 단일 파일 + `uv run`** (의존�
 |----|------|------|
 | `sprite_slicer.py` | AI 캐릭터 시트(흰 배경) → 배경 제거·12프레임 분리·정렬 → Phaser 아틀라스 | `uv run tools/sprite_slicer.py content/<시트>.png --clear-enclosed` |
 | `build_sprites.py` | **모든 캐릭터 아틀라스를 한 번에 다시 만든다**(맥·윈도우 공통). 시트별 보정 옵션이 여기 적혀 있으니 슬라이서를 직접 부르지 말고 이걸 쓴다. `build_sprites.sh`는 이것을 부르는 얇은 래퍼 | `uv run tools/build_sprites.py [캐릭터키]` (= `pnpm build:sprites`) |
+| `env_slicer.py` | 격자 시트(환경·UI·아이콘·작물·단어·효과·바닥 타일 등)를 잘라 `assets/` 아래로. 시트 목록은 파일 안 `PROPS`·`ICON_SHEETS`, 크기 기준은 `docs/ISLAND_LAYOUT.md`, 목록은 `docs/ASSET_CHECKLIST.md` | `uv run tools/env_slicer.py [작업이름]` |
+| `island_overview.py` | 섬 구상도에 구역·화면·캐릭터 실제 크기를 그린 그림과 크기 비교표를 `docs/img/`에 만든다 | `uv run tools/island_overview.py` |
 | `palette_swap.py` | 털 무늬/꼬리 끝 + 스카프 색만 바꿔 플레이어 7인 외형 생성 | `uv run tools/palette_swap.py` |
 | `atlas_preview.html` | 아틀라스 애니메이션 재생·검수 (피벗선, 어니언 스킨, 바닥 스크롤) | 아래 참고 |
 | `content_lint.py` | 단어/대사/퀘스트 JSON·CSV 검증 (12단어 제한, 허용 어휘, 한글 번역, 중복 id, 에셋 경로) | `uv run tools/content_lint.py [--strict] [-v]` |
@@ -26,6 +28,7 @@ content/…시트.png (+ 추가 포즈 시트)
 ```
 - 시트 규격: 3행×4열. 행 = `down / up / left`, 열 = `idle / walk_a / walk_b / net`. **오른쪽은 `left`의 flipX**(애니메이션 JSON의 `flipX: true`, 클라이언트가 적용).
 - 걷기 루프는 `[idle, walk_a, idle, walk_b]`, `net`은 단발.
+- 4열 이름은 `--action`으로 바꾼다: NPC는 `talk`/`cheer`/`cast`, 곤충은 `flee`(`assets/insects/`에 출력, 날개 모양이 프레임마다 달라 `--pivot-x feet`). 설정은 `build_sprites.py`의 `JOBS`.
 - 셀 수가 12개가 아니면 **조용히 넘어가지 않고 오류 종료**한다 (`--merge-gap`, `--min-area`, `--tol`로 조정).
 - 프레임 정렬: 발바닥 높이는 맞추고(bottom align), 가로는 같은 행의 idle 실루엣과 상관 정합(`--pivot-x register`, 기본) 또는 발 중심(`feet`).
 - 그물 안쪽 흰 면은 `--clear-enclosed`로 투명 처리.
