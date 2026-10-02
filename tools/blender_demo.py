@@ -1,10 +1,12 @@
-"""Render the Island gameplay showcase.
+"""Render the Island failed-catch showcase: approach, three gauge misses, a butterfly
+flee, a puzzled cat, then the dusk-to-night firefly ending.
 
 Run: "C:/Program Files/Blender Foundation/Blender 4.2/blender.exe" -b --factory-startup -P tools/blender_demo.py -- --out docs/img/showcase/previs.mp4
 """
 
 import json
 import math
+import random
 import sys
 from pathlib import Path
 
@@ -12,7 +14,7 @@ import bpy
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-PX, FPS, FRAMES, W, H = 96.0, 24, 288, 20.0, 11.25
+PX, FPS, FRAMES, W, H = 96.0, 24, 384, 20.0, 11.25
 
 
 def argument(name, fallback):
@@ -42,6 +44,14 @@ def constant(data):
         for curve in animation.action.fcurves:
             for point in curve.keyframe_points:
                 point.interpolation = "CONSTANT"
+
+
+def linear(data):
+    animation = getattr(data, "animation_data", None)
+    if animation and animation.action:
+        for curve in animation.action.fcurves:
+            for point in curve.keyframe_points:
+                point.interpolation = "LINEAR"
 
 
 def configure_scene():
@@ -191,8 +201,66 @@ def show(objects, action, frame):
     for key, obj in objects.items(): key_hide(obj, frame, key != selected)
 
 
-def show_frame(objects, frame_name, frame):
-    for key, obj in objects.items(): key_hide(obj, frame, key != (frame_name, False))
+def show_frame(objects, frame_name, frame, flip=False):
+    for key, obj in objects.items(): key_hide(obj, frame, key != (frame_name, flip))
+
+
+def smoothstep(value):
+    value = max(0.0, min(1.0, value)); return value * value * (3.0 - 2.0 * value)
+
+
+def key_ui(obj, frame, x, y, extra=2.0):
+    obj.location = (*game_xy(x, y), depth(y, extra)); obj.keyframe_insert(data_path="location", frame=frame)
+
+
+def irregular_flight():
+    """Seeded little flight phrases; each post-dart phrase gets a new home."""
+    rng, phrases = random.Random(7), []
+    for start, end, home in ((0.0, 4.2, (470, 320)), (4.45, 6.4, (565, 230)), (6.65, 8.6, (500, 290)), (8.85, 9.9, (540, 370))):
+        at, previous = start, home
+        while at < end:
+            duration = rng.uniform(.35, .7)
+            target = (home[0] + rng.uniform(-45, 45), home[1] + rng.uniform(-45, 45))
+            if rng.random() < .27: target, duration = previous, rng.uniform(.2, .3)  # a brief hover
+            phrases.append((at, min(end, at + duration), previous, target))
+            at, previous = at + duration, target
+    return phrases
+
+
+FLIGHT = irregular_flight()
+
+
+def flutter(second):
+    for index, (start, end, first, last) in enumerate(FLIGHT):
+        if start <= second <= end:
+            amount = smoothstep((second - start) / max(.001, end - start))
+            x, y = first[0] + (last[0] - first[0]) * amount, first[1] + (last[1] - first[1]) * amount
+            return x, y + math.sin(second * 14) * 4, last[0] - first[0]
+        if end <= second and index + 1 < len(FLIGHT):
+            next_start, _, next_first, _ = FLIGHT[index + 1]
+            if second < next_start:
+                amount = (second - end) / max(.001, next_start - end)
+                amount = 1 - (1 - amount) ** 3
+                x, y = last[0] + (next_first[0] - last[0]) * amount, last[1] + (next_first[1] - last[1]) * amount
+                return x, y + math.sin(second * 14) * 4, next_first[0] - last[0]
+    if second >= 9.9:
+        return 540, 370, 1
+    raise RuntimeError("Flight phrases do not cover this time")
+
+
+def gauge_bar():
+    """One UI rig with shared rail/marker and four independently sized hit zones."""
+    rig = new_rig("GaugeRig")
+    border = plane("GaugeBorder", 156/48, 24/48, flat_material("GaugeBorderMat", (.98, .93, .82), 1), (0, 0, 0))
+    track = plane("GaugeTrack", 150/48, 18/48, flat_material("GaugeTrackMat", (.36, .24, .16), 1), (0, 0, .01))
+    marker = plane("GaugeMarker", 4/48, 26/48, flat_material("GaugeMarkerMat", (1, 1, 1), 1), (0, 0, .04))
+    flash = plane("GaugeMissFlash", 150/48, 18/48, flat_material("GaugeMissFlashMat", (.9, .3, .25), 0), (0, 0, .03))
+    for obj in (border, track, marker, flash): obj.parent = rig
+    zones = []
+    for index, (fraction, center) in enumerate(((.34, -20), (.26, 23), (.20, -12), (.15, 30))):
+        zone = plane("GaugeHitZone" + str(index + 1), 150*fraction/48, 14/48, flat_material("GaugeHitMat" + str(index + 1), (.45, .78, .36), 1), (center/48, 0, .02))
+        zone.parent = rig; zones.append(zone)
+    return rig, border, track, marker, flash, zones
 
 
 def ground():
@@ -204,7 +272,7 @@ def ground():
 
 def environment():
     manifest = json.loads((ROOT / "assets/env/manifest.json").read_text(encoding="utf-8"))
-    layout = [("buildings/tent",(215,205)),("buildings/cabin",(790,210)),("props/bulletin_board",(610,190)),("buildings/campfire",(720,400)),("props/lantern_post",(665,365)),("trees/oak",(85,205)),("trees/oak",(900,310)),("trees/pine",(115,455)),("plants/bush",(155,335)),("plants/bush",(865,175)),("flowers/cosmos",(505,275)),("flowers/cosmos",(550,300)),("flowers/daisy",(570,250)),("flowers/tulip",(485,320)),("flowers/wildflowers",(455,245)),("flowers/wildflowers",(595,310)),("flowers/wildflowers",(375,205)),("props/bench",(390,430))]
+    layout = [("buildings/tent",(215,205)),("buildings/cabin",(790,210)),("props/bulletin_board",(610,190)),("buildings/campfire",(720,400)),("props/lantern_post",(665,365)),("trees/oak",(85,205)),("trees/oak",(900,310)),("trees/pine",(115,455)),("plants/bush",(155,335)),("plants/bush",(865,175)),("flowers/cosmos",(505,275)),("flowers/cosmos",(550,300)),("flowers/daisy",(570,250)),("flowers/tulip",(485,320)),("flowers/wildflowers",(455,245)),("flowers/wildflowers",(595,310)),("flowers/wildflowers",(375,205)),("props/bench",(390,505))]
     for number, (asset_id, feet) in enumerate(layout):
         spec = manifest[asset_id]
         image_plane(asset_id.replace("/", "_") + str(number), ROOT / "assets" / spec["file"], feet, spec["world"], spec["origin"])
@@ -220,52 +288,90 @@ def main():
     cat_atlas = json.loads((ROOT / "assets/sprites/cat_base.json").read_text(encoding="utf-8")); cat_anims = json.loads((ROOT / "assets/sprites/cat_base.anims.json").read_text(encoding="utf-8"))
     cat = new_rig("CatFeet"); cats, cat_actions = animated_sprite("Cat", ROOT / "assets/sprites/cat_base.png", cat_atlas, cat_anims, cat)
     # One-shot poses live in the atlas but are intentionally absent from loop data.
-    for frame_name in ("down_surprised", "down_net_up", "down_net_down", "down_joy"):
+    for frame_name in ("down_surprised", "down_net_up", "down_net_down", "left_net_up", "left_net_down"):
         cats[(frame_name, False)] = atlas_plane("Cat_" + frame_name, ROOT / "assets/sprites/cat_base.png", cat_atlas, frame_name, cat)
+    for frame_name in ("left_net_up", "left_net_down"):
+        cats[(frame_name, True)] = atlas_plane("Cat_" + frame_name + "_flip", ROOT / "assets/sprites/cat_base.png", cat_atlas, frame_name, cat, True)
     bug_atlas = json.loads((ROOT / "assets/insects/insect_butterfly.json").read_text(encoding="utf-8")); bug_anims = json.loads((ROOT / "assets/insects/insect_butterfly.anims.json").read_text(encoding="utf-8"))
     bug = new_rig("ButterflyFeet"); bugs, bug_actions = animated_sprite("Butterfly", ROOT / "assets/insects/insect_butterfly.png", bug_atlas, bug_anims, bug)
     shadow = plane("ButterflyShadow", .44, .15, flat_material("ShadowMat", (.07,.12,.08), .36), (0,0,.1))
 
-    exclaim, ring, needle = ui("Exclaim","assets/fx/emote_exclaim.png",(542,305),.75), ui("AimRing","assets/ui/hud/ring.png",(548,370)), ui("AimNeedle","assets/ui/hud/ring_needle.png",(548,370),1,2.01)
-    for obj in (exclaim,ring,needle): visible_between(obj, f(4.5), f(5.5))
-    needle.rotation_euler[2] = -.7; needle.keyframe_insert(data_path="rotation_euler",frame=f(4.5)); needle.rotation_euler[2] = .8; needle.keyframe_insert(data_path="rotation_euler",frame=f(5.5))
-    for index, (asset,dx,dy) in enumerate((("sparkle.png",0,0),("star_small.png",35,-22),("petal.png",-35,20),("petal.png",28,27))):
-        obj = ui("Burst"+str(index),"assets/fx/"+asset,(560+dx,370+dy),.65); visible_between(obj,f(5.55),f(6.55))
-        for frame,scale,alpha in ((f(5.55),.25,1),(f(6.55),1.7,0)):
-            obj.scale = (scale,scale,1); obj.keyframe_insert(data_path="scale",frame=frame); opacity(obj,frame,alpha)
+    exclaim = ui("Exclaim", "assets/fx/emote_exclaim.png", (385, 290), .75)
+    question = ui("Question", "assets/fx/emote_question.png", (385, 280), .75)
+    visible_between(exclaim, f(2.4), f(3.0)); visible_between(question, f(11.1), f(12.6))
+    sweats = []
+    for index, second in enumerate((4.2, 6.4, 8.6)):
+        sweat = ui("Sweat" + str(index + 1), "assets/fx/sweat.png", (400, 300), .55)
+        visible_between(sweat, f(second), f(second + .36)); opacity(sweat, f(second), 1); opacity(sweat, f(second + .36), 0)
+        sweats.append(sweat)
 
-    card_rig = new_rig("WordCard"); card, word = ui("WordCardPanel","assets/ui/panels/word_card.png",(548,190),1.15), ui("WordButterfly","assets/words/butterfly.png",(548,190),.6,2.01)
-    card.parent = card_rig; word.parent = card_rig
-    for obj in (card,word): visible_between(obj,f(6.5),f(9.95)); opacity(obj,f(9.5),1); opacity(obj,f(9.95),0)
-    for frame,scale in ((f(6.5),.1),(f(6.8),1.18),(f(7.05),1),(f(9.5),1),(f(9.95),.82)):
-        card_rig.scale = (scale,scale,1); card_rig.keyframe_insert(data_path="scale",frame=frame)
+    gauge, border, track, marker, flash, zones = gauge_bar()
+    gauge_parts = (border, track, marker, flash, *zones)
+    attempts = ((3.0, .34, 1.0, -20, 16, False), (5.2, .26, .8, 23, -10, False), (7.4, .20, .65, -12, 9, False), (9.6, .15, .5, 30, -4, True))
+    for index, (start, fraction, period, center, miss, flees) in enumerate(attempts):
+        tap, end = start + 1.2, (10.2 if flees else start + 1.5)
+        fade = 9.9 if flees else tap
+        for obj in (border, track, marker, zones[index]):
+            visible_between(obj, f(start), f(end)); opacity(obj, f(start), 1); opacity(obj, f(fade), 1); opacity(obj, f(end), 0)
+        if not flees: visible_between(flash, f(tap), f(tap + .25)); opacity(flash, f(tap), .82); opacity(flash, f(tap + .25), 0)
+
+    dusts = []
+    for index, (when, x, y) in enumerate(((9.92, 520, 372), (10.04, 590, 300), (10.16, 675, 215), (10.28, 765, 125))):
+        dust = ui("FleeDust" + str(index + 1), "assets/fx/dust.png", (x, y), .34)
+        visible_between(dust, f(when), f(when + .34)); key_ui(dust, f(when), x, y)
+        for frame, scale, alpha in ((f(when), .35, .85), (f(when + .34), 1.35, 0)):
+            dust.scale = (scale, scale, 1); dust.keyframe_insert(data_path="scale", frame=frame); opacity(dust, frame, alpha)
+        dusts.append(dust)
 
     for name, center, scale in (("LanternGlow",(665,316),1.3),("FireGlow",(720,374),1.15)):
-        glow = ui(name,"assets/fx/weather/light_glow.png",center,scale); visible_between(glow,f(10),FRAMES); opacity(glow,f(10),0); opacity(glow,f(12),.9)
+        glow = ui(name,"assets/fx/weather/light_glow.png",center,scale); visible_between(glow,f(12.6),FRAMES); opacity(glow,f(12.6),0); opacity(glow,f(14.4),.9)
     for index,(x,y) in enumerate(((520,330),(600,250),(790,320),(445,390))):
-        fly = ui("Firefly"+str(index),"assets/insects/icons/firefly.png",(x,y),.34); visible_between(fly,f(10.1+index*.12),FRAMES); opacity(fly,f(10),0); opacity(fly,f(11.1+index*.12),.95)
+        fly = ui("Firefly"+str(index),"assets/insects/icons/firefly.png",(x,y),.34); visible_between(fly,f(12.7+index*.12),FRAMES); opacity(fly,f(12.6),0); opacity(fly,f(13.7+index*.12),.95)
 
     for frame in range(1,FRAMES+1):
         second = (frame-1)/FPS
-        if second < 1.5: cx,cy,action = 285,378,"idle_down"
-        elif second < 4.5: cx,cy,action = 285+(second-1.5)/3*260,378,"walk_right"
-        elif second < 5.5: cx,cy,action = 545,378,"down_surprised"
-        elif second < 6: cx,cy,action = 545,378,"down_net_up"
-        elif second < 6.5: cx,cy,action = 545,378,"down_net_down"
-        elif second < 8.5: cx,cy,action = 545,378,"down_joy"
-        else: cx,cy,action = 545,378,"idle_down"
+        if second < 1.5: cx, cy, action, flip = 250, 378, "idle_down", False
+        elif second < 3.0: cx, cy, action, flip = 250 + (second-1.5)/1.5*150, 378, "walk_right", False
+        elif second < 4.2: cx, cy, action, flip = 400, 378, "left_net_up", True
+        elif second < 4.5: cx, cy, action, flip = 400, 378, "left_net_down", True
+        elif second < 5.2: cx, cy, action, flip = 400 + (second-4.5)/.7*70, 378 + (second-4.5)/.7*-78, "walk_up", False
+        elif second < 6.4: cx, cy, action, flip = 470, 300, "left_net_up", True
+        elif second < 6.7: cx, cy, action, flip = 470, 300, "left_net_down", True
+        elif second < 7.4: cx, cy, action, flip = 470 + (second-6.7)/.7*-80, 300 + (second-6.7)/.7*-10, "walk_left", False
+        elif second < 8.6: cx, cy, action, flip = 390, 290, "left_net_up", True
+        elif second < 8.9: cx, cy, action, flip = 390, 290, "left_net_down", True
+        elif second < 9.6: cx, cy, action, flip = 390 + (second-8.9)/.7*50, 290 + (second-8.9)/.7*40, "walk_right", False
+        elif second < 9.9: cx, cy, action, flip = 440, 330, "left_net_up", True
+        elif second < 11.1: cx, cy, action, flip = 440, 330, "down_surprised", False
+        else: cx, cy, action, flip = 440, 330, "idle_down", False
         key_rig(cat,frame,cx,cy)
         if action in cat_actions: show(cats,cat_actions[action],frame)
-        else: show_frame(cats,action,frame)
-        bx,by = 430+min(second,5.9)/5.9*155,333+math.sin(second*3.3)*18
-        key_rig(bug,frame,bx,by); show(bugs,bug_actions["walk_right"],frame); key_hide(bug,frame,second>=6.05)
-        shadow.location = (*game_xy(bx,by+24),depth(by+24,.02)); shadow.keyframe_insert(data_path="location",frame=frame); key_hide(shadow,frame,second>=6.05)
-    for item in [cat,bug,*cats.values(),*bugs.values()]: constant(item)
-    for second,tint in ((0,(1,1,1)),(10,(1,1,1)),(11,(.85,.62,.42)),(12,(.45,.5,.8))):
+        else: show_frame(cats,action,frame,flip)
+        key_ui(exclaim, frame, cx, cy-88); key_ui(question, frame, cx, cy-92)
+        for sweat in sweats: key_ui(sweat, frame, cx+28, cy-78)
+        gauge_drop = 20 * smoothstep((second - 9.9) / .3) if 9.9 <= second <= 10.2 else 0
+        key_ui(gauge, frame, cx, cy-150-gauge_drop)
+        active = next((item for item in attempts if item[0] <= second < (10.2 if item[5] else item[0] + 1.5)), None)
+        if active:
+            start, fraction, period, center, miss, flees = active
+            position = -72 + 144 * (1 - abs(((second-start) / (period/2)) % 2 - 1)) if flees or second < start + 1.2 else miss
+            marker.location.x = position / 48; marker.keyframe_insert(data_path="location", frame=frame)
+        if second < 9.9:
+            bx, by, dx = flutter(second); bug_action = "walk_right" if dx >= 0 else "walk_left"
+        elif second < 10.4:
+            start_x, start_y, _ = flutter(9.9); amount = smoothstep((second-9.9)/.5)
+            bx, by = start_x + (1040-start_x)*amount, start_y + (-75-start_y)*amount - math.sin(amount*math.pi)*75
+            bug_action = "flee_right" if second < 10.12 else "flee_up"
+        else: bx, by, bug_action = 1040, -75, "flee_up"
+        key_rig(bug,frame,bx,by); show(bugs,bug_actions[bug_action],frame); key_hide(bug,frame,second >= 10.4)
+        shadow.location = (*game_xy(bx,by+24),depth(by+24,.02)); shadow.keyframe_insert(data_path="location",frame=frame); key_hide(shadow,frame,second >= 10.4)
+    for item in [cat, bug, gauge, shadow, exclaim, question, *cats.values(), *bugs.values(), *sweats, *gauge_parts]: constant(item)
+    for second,tint in ((0,(1,1,1)),(12.6,(1,1,1)),(13.5,(.85,.62,.42)),(15,(.45,.5,.8))):
         for channel,value in zip("rgb",tint): SCENE["tint_"+channel] = value; SCENE.keyframe_insert(data_path='["tint_'+channel+'"]',frame=f(second))
+    linear(SCENE)
 
     OUT.parent.mkdir(parents=True,exist_ok=True); SCENE.render.filepath = str(OUT); bpy.ops.render.render(animation=True)
-    for target,frame in ((OUT.with_name(f"{OUT.stem}_poster.jpg"),f(6)),(OUT.with_name(f"{OUT.stem}_day.jpg"),f(2)),(OUT.with_name(f"{OUT.stem}_night.jpg"),f(11.5))):
+    for target,frame in ((OUT.with_name(f"{OUT.stem}_poster.jpg"),f(8)),(OUT.with_name(f"{OUT.stem}_day.jpg"),f(2)),(OUT.with_name(f"{OUT.stem}_night.jpg"),f(15))):
         SCENE.frame_set(frame); SCENE.render.image_settings.file_format, SCENE.render.image_settings.color_mode, SCENE.render.image_settings.quality = "JPEG","RGB",92; SCENE.render.filepath = str(target); bpy.ops.render.render(write_still=True)
     for output in (OUT,OUT.with_name(f"{OUT.stem}_poster.jpg"),OUT.with_name(f"{OUT.stem}_day.jpg"),OUT.with_name(f"{OUT.stem}_night.jpg")): print("created:",output)
 

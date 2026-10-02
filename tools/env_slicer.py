@@ -91,6 +91,12 @@ ICON_SHEETS: dict[str, tuple[str, int, int, str, int | None, list]] = {
         "cat", "bug", "butterfly", "flower", "leaf", "seed", "water", "net", "jar", "tent", "tree", "sun"]),
     "tools": ("content/items_tools_0b6ae033.png", 3, 3, "items/tools", 256, [
         "net", "jar", "jar_bug", "watering_can", "seed_packet", "backpack", "fishing_rod", "trowel", "basket"]),
+    "gear": ("content/gear_tiers_9c7f90bf.png", 3, 3, "items/gear", 256, [  # rows = kind, cols = tier 1-3
+        "gloves_cotton", "gloves_garden", "gloves_star", "shoes_canvas", "boots_rain", "sneakers_wing",
+        "net_bamboo", "net_sturdy", "net_rainbow"]),
+    "rewards": ("content/rewards_0278f002.png", 3, 3, "items/rewards", 256, [
+        "shell_coin", "shell_coins", "sticker_sheet", "gift_box", "stamp_card", "star_medal",
+        "treasure_chest", "leaf_badge", "upgrade_ticket"]),
     "fx": ("content/fx_b710d0fd.png", 4, 4, "fx", 128, [
         "sparkle", "star_small", "twinkle", "glow", "leaf", "petal", "dirt", "splash",
         "dust", "smoke", "emote_exclaim", "emote_question", "heart", "note", "sweat", "confetti"]),
