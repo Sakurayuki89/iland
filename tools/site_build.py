@@ -156,18 +156,20 @@ def build_index(zones: list[dict], species: list[dict], npcs: list[dict]) -> str
         "rain": "비 오는 날 캠프",
         "demo": "게임 시연 영상 — 게이지 바로 3번 놓치고 4번째에 나비가 도망 (Higgsfield Kling, Blender 프리비즈 기반)",
         "gear_rewards": "장비 3단계(장갑·신발·채집망)와 보상 아이콘 (Grok)",
+        "catch_chance": "찬스 버튼 — 기회를 다 쓰면 영어로 말해서 한 번 더 (목업)",
     }
     showcase_docs = {
         "rain": ("비는 섬 일부에만 내리고 옮겨 간다. 비 오는 구역엔 지렁이·달팽이가 나오고 나는 곤충은 숨는다.", "docs/WEATHER_AND_SPAWN.html#rain"),
         "night": ("밤에는 장수풍뎅이·사슴벌레·반딧불이·나방이 나온다. 섬 시계는 20분에 하루가 돈다.", "docs/WEATHER_AND_SPAWN.html#time"),
         "catch_fx": ("게이지 바 판정과 성공·도망 연출", "docs/REWARD_SYSTEM.html"),
         "gear_rewards": ("장비 3단계와 보상 체계", "docs/REWARD_SYSTEM.html"),
-        "demo": ("게이지 바 3번 실패 → 4번째에 도망", "docs/REWARD_SYSTEM.html"),
+        "catch_chance": ("등급마다 다른 남은 기회 동그라미, 도망 직전 찬스, 바르게 말해야 받는 보상", "docs/CATCH_AND_SPEAKING.html"),
+        "demo": ("게이지 바 3번 실패 → 4번째에 도망", "docs/CATCH_AND_SPEAKING.html"),
     }
     if showcase_dir.is_dir():
         media_files = [path for path in showcase_dir.iterdir() if path.is_file()]
         has_video = any(path.suffix.lower() == ".mp4" for path in media_files)
-        image_order = {"catch_fx": 0, "gear_rewards": 1, "inventory": 2, "night": 3, "rain": 4}
+        image_order = {"catch_chance": 0, "catch_fx": 1, "gear_rewards": 2, "inventory": 3, "night": 4, "rain": 5}
         def showcase_sort_key(media: Path) -> tuple[int, int | str, str]:
             if media.suffix.lower() == ".mp4":
                 return (0, 0, media.name.lower())

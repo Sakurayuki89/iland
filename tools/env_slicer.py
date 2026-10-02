@@ -89,6 +89,14 @@ ICON_SHEETS: dict[str, tuple[str, int, int, str, int | None, list]] = {
         f"flower_{c}_{s}" for c in ("pink", "blue", "yellow", "white") for s in range(5)]),
     "words": ("content/words_e318408f.png", 3, 4, "words", 512, [
         "cat", "bug", "butterfly", "flower", "leaf", "seed", "water", "net", "jar", "tent", "tree", "sun"]),
+    "words_rain": ("content/words_rain_fbaf29bc.png", 2, 2, "words", 512, [
+        "worm", "snail", "water_beetle", "water_strider"]),
+    # catch gauge + speaking UI (docs/CATCH_AND_SPEAKING.md)
+    "ui_catch": ("content/ui_catch_eeeeabd8.png", 4, 4, "ui/catch", None, [
+        "speaker", "speaker_playing", "mic", "mic_listening",
+        "chance_button", "pip_green", "pip_blue", "pip_gold",
+        "pip_empty", "gauge_track", "gauge_marker", "oops",
+        "speech_wave", "check", "retry", "slow"]),
     "tools": ("content/items_tools_0b6ae033.png", 3, 3, "items/tools", 256, [
         "net", "jar", "jar_bug", "watering_can", "seed_packet", "backpack", "fishing_rod", "trowel", "basket"]),
     "gear": ("content/gear_tiers_9c7f90bf.png", 3, 3, "items/gear", 256, [  # rows = kind, cols = tier 1-3
