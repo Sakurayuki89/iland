@@ -9,6 +9,7 @@ Island 제작용 자체 툴. 모두 **Python 단일 파일 + `uv run`** (의존�
 | `build_sprites.py` | **모든 캐릭터 아틀라스를 한 번에 다시 만든다**(맥·윈도우 공통). 시트별 보정 옵션이 여기 적혀 있으니 슬라이서를 직접 부르지 말고 이걸 쓴다. `build_sprites.sh`는 이것을 부르는 얇은 래퍼 | `uv run tools/build_sprites.py [캐릭터키]` (= `pnpm build:sprites`) |
 | `env_slicer.py` | 격자 시트(환경·UI·아이콘·작물·단어·효과·바닥 타일 등)를 잘라 `assets/` 아래로. 시트 목록은 파일 안 `PROPS`·`ICON_SHEETS`, 크기 기준은 `docs/ISLAND_LAYOUT.md`, 목록은 `docs/ASSET_CHECKLIST.md` | `uv run tools/env_slicer.py [작업이름]` |
 | `island_overview.py` | 섬 구상도에 구역·화면·캐릭터 실제 크기를 그린 그림과 크기 비교표를 `docs/img/`에 만든다 | `uv run tools/island_overview.py` |
+| `blender_demo.py` | Blender로 실제 게임 에셋을 사용한 탑다운 게임플레이 **프리비즈**(구도·동선·타이밍) 영상과 포스터를 렌더링. 최종 시연 영상은 이 프리비즈를 Higgsfield에 동작 참고로 넣어 만든다 | `"C:/Program Files/Blender Foundation/Blender 4.2/blender.exe" -b --factory-startup -P tools/blender_demo.py -- --out docs/img/showcase/previs.mp4` |
 | `palette_swap.py` | 털 무늬/꼬리 끝 + 스카프 색만 바꿔 플레이어 7인 외형 생성 | `uv run tools/palette_swap.py` |
 | `atlas_preview.html` | 아틀라스 애니메이션 재생·검수 (피벗선, 어니언 스킨, 바닥 스크롤) | 아래 참고 |
 | `content_lint.py` | 단어/대사/퀘스트 JSON·CSV 검증 (12단어 제한, 허용 어휘, 한글 번역, 중복 id, 에셋 경로) | `uv run tools/content_lint.py [--strict] [-v]` |
@@ -64,3 +65,6 @@ data/quest/*.json           파티 퀘스트 (schema: data/schema/quest.schema.j
 - 에셋 경로가 비었거나 파일이 없으면 기본은 경고, `--strict`면 오류. (아직 이미지/음성이 없어 기본 실행은 경고만 낸다.)
 - 종료 코드 0/1 → 나중에 pre-commit/CI에 그대로 연결 가능.
 - `unit1.csv`의 12단어는 콘셉트 이미지에서 뽑은 **시드 목록**이다. 설계 문서의 유닛 구성(인사→동물·곤충→색·꽃…)에 맞춰 재배치할 것.
+| 도구 | 기능 | 실행 |
+|---|---|---|
+| `site_build.py` | GitHub Pages용 정적 사이트와 LLM 데이터 파일 생성 | `uv run tools/site_build.py` |

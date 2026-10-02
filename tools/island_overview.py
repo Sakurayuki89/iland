@@ -30,12 +30,6 @@ WORLD = (SCREEN[0] * GRID, SCREEN[1] * GRID)
 TILE = 48
 SRC = 2  # stored px per world px
 WALK = 140  # px/s
-CAMP = (1, 1)  # row, col of the start zone
-
-ZONES = ["텃밭", "꽃 들판", "언덕 (후속)", "깊은 숲 (희귀)",
-         "꽃 들판", "캠프", "잔치 마당", "숲 그늘",
-         "꽃 들판", "갈림길 (우물)", "호수", "숲 가장자리",
-         "바닷가 (후속)", "선착장", "호숫가 (다리)", "바위 해안 (후속)"]
 
 # insects in the world are drawn bigger than life so kids can tap them (cat head ~ 45 px)
 INSECT_WORLD = {"butterfly": 40, "bee": 28, "dragonfly": 48, "grasshopper": 34, "rhino_beetle": 38,
@@ -74,12 +68,15 @@ def overview(cat: Image.Image) -> None:
     over = Image.new("RGBA", (W, H))
     d = ImageDraw.Draw(over)
     sw, sh = SCREEN
-    for i, name in enumerate(ZONES):
-        r, c = divmod(i, GRID)
+    zones = json.loads((ROOT / "data/world/zones.json").read_text(encoding="utf-8"))
+    start = next(zone for zone in zones if zone["name_en"] == "Camp")
+    for zone in zones:
+        r, c = zone["row"], zone["col"]
+        name = zone["name_ko"] + (" (후속)" if zone["status"] == "later" else "")
         d.rectangle((c * sw, r * sh, (c + 1) * sw - 1, (r + 1) * sh - 1), outline=(255, 255, 255, 170), width=3)
         label(d, (c * sw + 18, r * sh + 14), name, 34, anchor="la")
     # one screen around the camp, and the cat at true world size inside it
-    x0, y0 = CAMP[1] * sw, CAMP[0] * sh
+    x0, y0 = start["col"] * sw, start["row"] * sh
     d.rectangle((x0, y0, x0 + sw - 1, y0 + sh - 1), outline=(255, 90, 60, 255), width=8)
     label(d, (x0 + sw - 18, y0 + sh - 14), f"화면 1장 = {sw}×{sh} (타일 {sw // TILE}×{sh / TILE:g})", 26,
           fill=(255, 230, 220, 255), anchor="rd")

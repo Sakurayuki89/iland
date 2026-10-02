@@ -1,0 +1,6 @@
+[
+  {"id":"professor","name_ko":"박사님","name_en":"Professor","role_ko":"퀘스트 게시판 안내자","topics":["quests","island","directions"],"zone":"r1c1","atlas":"npc_professor","portrait":"assets/npc/portraits/professor.png","actions":["idle_down","walk_down","talk_down"]},
+  {"id":"collector","name_ko":"수집가 니콜","name_en":"Nicole the Collector","role_ko":"동물과 색깔 낱말 안내자","topics":["animals","colors","insects"],"zone":"r1c3","atlas":"npc_collector","portrait":"assets/npc/portraits/collector.png","actions":["idle_down","walk_down","talk_down"]},
+  {"id":"fisher","name_ko":"낚시꾼 핀","name_en":"Finn the Fisher","role_ko":"날씨와 시간 낱말 안내자","topics":["weather","time","fish"],"zone":"r3c1","atlas":"npc_fisher","portrait":"assets/npc/portraits/fisher.png","actions":["idle_down","walk_down","cast_down"]},
+  {"id":"cook","name_ko":"요리사 코코","name_en":"Coco the Cook","role_ko":"음식과 수량 낱말 안내자","topics":["food","numbers","recipes"],"zone":"r1c2","atlas":null,"portrait":"assets/npc/portraits/cook.png","actions":[]}
+]

@@ -14,6 +14,7 @@
     "bench": "uv run tools/bench.py",
     "lint:content": "uv run tools/content_lint.py",
     "test:tools": "uv run tools/tests/test_content_lint.py && uv run tools/tests/test_common.py",
-    "build:sprites": "uv run tools/build_sprites.py"
+    "build:sprites": "uv run tools/build_sprites.py",
+    "site": "uv run tools/site_build.py"
   }
 }

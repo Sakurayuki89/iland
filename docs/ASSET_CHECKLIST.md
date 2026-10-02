@@ -1,5 +1,8 @@
 # 에셋 점검표
 
+Island 사이트: https://sakurayuki89.github.io/iland/  
+LLM은 먼저 `llms.txt`와 `data/world.json`을 읽어 섬의 최신 데이터를 확인합니다.
+
 설계서(`DESIGN_AND_TECH_PLAN.md`)의 기능과 일반적인 2D 모바일 게임 에셋 분류(캐릭터 · 환경 · UI · 아이템 아이콘 · 효과 · 오디오 · 스토어)를 기준으로 정리했다. 2026-10-02 기준.
 
 원본 시트는 `content/`, 잘라 낸 게임용 PNG는 `assets/`. 다시 만들기:

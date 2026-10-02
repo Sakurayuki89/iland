@@ -1,0 +1,21 @@
+[
+  {"id":"butterfly","kind":"insect","name_ko":"나비","name_en":"Butterfly","word":"butterfly","zones":["r0c0","r0c1","r0c3","r1c0","r2c0"],"time":"day","rarity":1,"icon":"assets/insects/icons/butterfly.png","atlas":"insect_butterfly","world_px":40},
+  {"id":"bee","kind":"insect","name_ko":"꿀벌","name_en":"Bee","word":"bee","zones":["r0c1","r1c0","r2c0"],"time":"day","rarity":1,"icon":"assets/insects/icons/bee.png","atlas":"insect_bee","world_px":28},
+  {"id":"dragonfly","kind":"insect","name_ko":"잠자리","name_en":"Dragonfly","word":"dragonfly","zones":["r0c0","r2c2","r3c2"],"time":"day","rarity":1,"icon":"assets/insects/icons/dragonfly.png","atlas":"insect_dragonfly","world_px":48},
+  {"id":"grasshopper","kind":"insect","name_ko":"메뚜기","name_en":"Grasshopper","word":"grasshopper","zones":["r0c1","r1c0","r2c0","r2c1"],"time":"day","rarity":1,"icon":"assets/insects/icons/grasshopper.png","atlas":"insect_grasshopper","world_px":34},
+  {"id":"rhinobeetle","kind":"insect","name_ko":"장수풍뎅이","name_en":"Rhinoceros Beetle","word":"beetle","zones":["r0c2","r2c3"],"time":"night","rarity":2,"icon":"assets/insects/icons/rhino_beetle.png","atlas":"insect_rhinobeetle","world_px":38},
+  {"id":"stagbeetle","kind":"insect","name_ko":"사슴벌레","name_en":"Stag Beetle","word":"beetle","zones":["r0c2","r2c3"],"time":"night","rarity":2,"icon":"assets/insects/icons/stag_beetle.png","atlas":"insect_stagbeetle","world_px":40},
+  {"id":"firefly","kind":"insect","name_ko":"반딧불이","name_en":"Firefly","word":"firefly","zones":["r1c3","r2c2","r3c2"],"time":"night","rarity":2,"icon":"assets/insects/icons/firefly.png","atlas":"insect_firefly","world_px":24},
+  {"id":"cricket","kind":"insect","name_ko":"귀뚜라미","name_en":"Cricket","word":"cricket","zones":["r0c3","r1c3","r2c1"],"time":"night","rarity":1,"icon":"assets/insects/icons/cricket.png","atlas":"insect_cricket","world_px":32},
+  {"id":"moth","kind":"insect","name_ko":"나방","name_en":"Moth","word":"moth","zones":["r0c3","r1c3"],"time":"night","rarity":1,"icon":"assets/insects/icons/moth.png","atlas":"insect_moth","world_px":40},
+  {"id":"jewelbeetle","kind":"insect","name_ko":"비단벌레","name_en":"Jewel Beetle","word":"jewel beetle","zones":["r0c2"],"time":"day","rarity":3,"icon":"assets/insects/icons/jewel_beetle.png","atlas":"insect_jewelbeetle","world_px":30},
+  {"id":"goldfish","kind":"fish","name_ko":"금붕어","name_en":"Goldfish","word":"goldfish","zones":["r2c2","r3c2"],"time":"any","rarity":1,"icon":"assets/fish/icons/goldfish.png","atlas":null},
+  {"id":"crucian_carp","kind":"fish","name_ko":"붕어","name_en":"Crucian Carp","word":"carp","zones":["r0c0","r2c2","r3c2"],"time":"any","rarity":1,"icon":"assets/fish/icons/crucian_carp.png","atlas":null},
+  {"id":"catfish","kind":"fish","name_ko":"메기","name_en":"Catfish","word":"catfish","zones":["r0c0","r2c2","r3c2"],"time":"night","rarity":2,"icon":"assets/fish/icons/catfish.png","atlas":null},
+  {"id":"sea_bream","kind":"fish","name_ko":"도미","name_en":"Sea Bream","word":"sea bream","zones":["r3c0","r3c1"],"time":"day","rarity":2,"icon":"assets/fish/icons/sea_bream.png","atlas":null},
+  {"id":"mackerel","kind":"fish","name_ko":"고등어","name_en":"Mackerel","word":"mackerel","zones":["r3c1"],"time":"any","rarity":1,"icon":"assets/fish/icons/mackerel.png","atlas":null},
+  {"id":"clownfish","kind":"fish","name_ko":"흰동가리","name_en":"Clownfish","word":"clownfish","zones":["r3c1"],"time":"day","rarity":2,"icon":"assets/fish/icons/clownfish.png","atlas":null},
+  {"id":"crab","kind":"fish","name_ko":"게","name_en":"Crab","word":"crab","zones":["r3c0","r3c3"],"time":"any","rarity":1,"icon":"assets/fish/icons/crab.png","atlas":null},
+  {"id":"octopus","kind":"fish","name_ko":"문어","name_en":"Octopus","word":"octopus","zones":["r3c1","r3c3"],"time":"night","rarity":3,"icon":"assets/fish/icons/octopus.png","atlas":null},
+  {"id":"pufferfish","kind":"fish","name_ko":"복어","name_en":"Pufferfish","word":"pufferfish","zones":["r3c3"],"time":"day","rarity":3,"icon":"assets/fish/icons/pufferfish.png","atlas":null}
+]
